@@ -1,0 +1,13 @@
+---
+title: What is Freckle?
+---
+
+<svelte:head>
+    <title>{title} &ndash; Freckle</title>
+</svelte:head>
+
+# {title}
+
+Freckle is a Discord bot.
+
+It can currently only do one thing, and that is [generate UT/DR textboxes](./intro-to-textboxes).

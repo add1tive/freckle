@@ -1,0 +1,160 @@
+/*
+ * Freckle - a Discord app and its website
+ * Copyright (C) 2025 add1tive
+ *
+ * This file is part of Freckle.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+@import url(../../node_modules/modern-normalize/modern-normalize.css);
+@import url(fonts.css);
+@import url(prism-dracula.css);
+
+:root {
+  color-scheme: dark;
+}
+html {
+    background-color: #25222d;
+    color: white;
+    font-family: "Fira Sans";
+}
+body {
+    min-height: 100dvh;
+}
+h1, h2, h3, h4, h5, h6, p {
+    margin: 0;
+}
+a:link {
+    color: aqua;
+}
+a:visited {
+    color: pink;
+}
+code {
+    background-color: #505050;
+    border-radius: 4px;
+    padding: 2px;
+}
+table {
+    border-collapse: collapse;
+}
+td,
+th {
+    border: 1px solid white;
+    padding: 0.7rem;
+    line-height: 1.5rem;
+}
+th {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+ul {
+    margin: 0;
+    padding-left: 1rem;
+}
+li {
+    margin: 0.5rem 0;
+    line-height: 1.5;
+}
+h1, h2, h3, h4, h5, h6 {
+    display: flex;
+}
+p {
+    line-height: 1.5;
+}
+img {
+    max-width: 100%;
+}
+
+:target {
+    scroll-margin-top: 4rem; /* navbar height */
+}
+
+/* custom things */
+a:has(.header-link) {
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    position: relative;
+    opacity: 0.2;
+    transition: 200ms;
+}
+a:has(.header-link):hover {
+    opacity: 1;
+}
+.header-link {
+    position: absolute;
+    right: 0.5rem;
+}
+
+/* Insane jank */
+.code-block {
+    display: inline-flex;
+    position: relative;
+}
+.code-block-copy-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    color: white;
+    margin: 0;
+    cursor: pointer;
+}
+.code-block-copy-btn > .material-symbols-outlined {
+    padding-top: 0.5rem;
+    opacity: 0.2;
+    transition: 200ms;
+    pointer-events: none;
+}
+.code-block-copy-btn:hover > .material-symbols-outlined  {
+    opacity: 1;
+}
+.code-block-copy-btn-tooltip {
+    position: absolute;
+    top: 0.75rem;
+    right: 2.25rem;
+    font-family: "Fira Sans";
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1000;
+    transition: 200ms;
+}
+.code-block-copy-btn:hover > .code-block-copy-btn-tooltip {
+    opacity: 1;
+}
+
+:root {
+    --sidebar-width: 20rem;
+    --whatever-this-is: max(var(--sidebar-width), calc(.5 * 100vw - 30rem));
+    --toc-left-padding: calc(100vw - (var(--whatever-this-is)) - 2rem);
+}
+.toc {
+    @media screen and (width > 1200px) {
+        position: fixed;
+        /* padding: 2rem calc(var(--whatever-this-is) + 4rem) 4rem calc(var(--whatever-this-is) + 4rem); */
+        left: var(--toc-left-padding);
+    }
+}
+.toc ol {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+.toc a {
+    text-decoration: none;
+    color: #b2a7b8;
+}

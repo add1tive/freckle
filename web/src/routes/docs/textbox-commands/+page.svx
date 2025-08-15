@@ -1,0 +1,91 @@
+---
+title: Textbox commands
+---
+
+<svelte:head>
+    <title>{title} &ndash; Freckle</title>
+</svelte:head>
+
+# {title}
+
+*More, such as `${speed:amount}`, coming soon.*
+
+The commands listed here are structured like this:
+
+```freckledemo
+${command:argument1,argument2,argument3,...}
+```
+
+No quotation marks are needed for strings.
+
+## Reset
+
+Resets the styling of the following text. Takes no arguments.
+
+```freckle
+${reset}
+```
+
+## Color
+
+Changes the color of the following text.
+
+```freckledemo
+${color:color}
+```
+
+Arguments:
+
+| Name    | Explanation                                                                                          |
+| ------- | ---------------------------------------------------------------------------------------------------- |
+| `color` | A [CSS color](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value) like `red` or `#ffffff`. |
+
+Example:
+
+```freckle
+${color:red}
+```
+
+## Shake
+
+Makes the following text shake/tremble.
+
+```freckledemo
+${shake:strength}
+```
+
+Arguments:
+
+| Name       | Explanation                     |
+| ---------- | ------------------------------- |
+| `strength` | An integer like `1`. In pixels. |
+
+Example:
+
+```freckle
+${shake:1}
+```
+
+## Glow
+
+Applies a CSS [`drop-shadow()`](https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/drop-shadow) filter (optionally several times). In other words, it makes text glow.
+
+Made so you can do things like [this](https://www.reddit.com/r/Undertale/comments/x80a77/guguys_whats_going_on_what_should_i_do/).
+
+```freckledemo
+${glow:strength,radius,color}
+```
+
+Arguments:
+
+| Name       | Explanation                                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------------------------------- |
+| `strength` | An integer like `10`. Specifies how many times the drop shadow effect will be drawn.                          |
+| `radius`   | The drop shadow radius, eg. 4px. See CSS [`length`](https://developer.mozilla.org/en-US/docs/Web/CSS/length). |
+| `color`    | A [CSS color](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value) like `red` or `#ffffff`.          |
+
+Example:
+
+```freckle
+${glow:10,4px,red}
+```

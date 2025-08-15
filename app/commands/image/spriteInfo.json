@@ -1,0 +1,62 @@
+{
+    "noelle": {
+        "textboxOffsetX": 9,
+        "textboxOffsetY": 7,
+        "portraitWidth": 54,
+        "portraitHeight": 62,
+        "spritesheetColumns": 21,
+        "expressionCount": 51,
+        "isDarkner": false,
+        "customFont": "none"
+    },
+    "susie": {
+        "textboxOffsetX": 14,
+        "textboxOffsetY": 13,
+        "portraitWidth": 45,
+        "portraitHeight": 51,
+        "spritesheetColumns": 26,
+        "expressionCount": 51,
+        "isDarkner": false,
+        "customFont": "none"
+    },
+    "ralsei": {
+        "textboxOffsetX": 16,
+        "textboxOffsetY": 16,
+        "portraitWidth": 48,
+        "portraitHeight": 52,
+        "spritesheetColumns": 18,
+        "expressionCount": 51,
+        "isDarkner": true,
+        "customFont": "none"
+    },
+    "sansboss": {
+        "textboxOffsetX": 18,
+        "textboxOffsetY": 19,
+        "portraitWidth": 32,
+        "portraitHeight": 30,
+        "spritesheetColumns": 11,
+        "expressionCount": 22,
+        "isDarkner": false,
+        "customFont": "Undertale Sans"
+    },
+    "sans": {
+        "textboxOffsetX": 17,
+        "textboxOffsetY": 13,
+        "portraitWidth": 42,
+        "portraitHeight": 44,
+        "spritesheetColumns": 7,
+        "expressionCount": 7,
+        "isDarkner": false,
+        "customFont": "Undertale Sans"
+    },
+    "papyrus": {
+        "textboxOffsetX": 17,
+        "textboxOffsetY": 15,
+        "portraitWidth": 33,
+        "portraitHeight": 50,
+        "spritesheetColumns": 6,
+        "expressionCount": 19,
+        "isDarkner": false,
+        "customFont": "Undertale Papyrus"
+    }
+}
