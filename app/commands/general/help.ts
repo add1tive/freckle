@@ -20,18 +20,26 @@
 
 import { getLogger } from "@logtape/logtape";
 import { ChatInputCommandInteraction } from "discord.js";
+import { exec } from "node:child_process";
 
 const logger_ = getLogger(["freckle-app"]);
 const logger = logger_.getChild("help");
 
+let gitCommit = "unknown";
+exec("git log --pretty=format:'%h' -n 1", function (error, stdout, stderr) {
+  gitCommit = stdout;
+});
+
 module.exports = {
-	data: {
-        name: "help",
-        description: "Sends you tips, useful links and all that",
-        "integration_types": [1],
-        "contexts": [0, 1, 2]
-    },
-	async execute(interaction: ChatInputCommandInteraction) {
-        await interaction.reply("home page is at https://add1tive.github.io/freckle/");
-	},
+  data: {
+    name: "help",
+    description: "Sends you tips, useful links and all that",
+    integration_types: [1],
+    contexts: [0, 1, 2],
+  },
+  async execute(interaction: ChatInputCommandInteraction) {
+    await interaction.reply(
+      `running Freckle, version \`${gitCommit}\`\nhome page is at https://add1tive.github.io/freckle/`
+    );
+  },
 };
