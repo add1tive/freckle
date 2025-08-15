@@ -26,7 +26,7 @@
 
     import { base } from "$app/paths";
     import { chars, type Whatever } from "./characters";
-    import spriteInfo from "./spriteInfo.json";
+    import spriteInfo from "../../../../../shared/assets/images/utdr_talk/spriteInfo.json";
 
     // Horrendous code. Don't even look at it.
     function getIconStyle(charId: string, exp: number): string {

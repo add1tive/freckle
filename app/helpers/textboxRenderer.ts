@@ -32,7 +32,7 @@ const logger = logger_.getChild("textboxa");
 // Freckle
 import { getRandomIntInclusive } from "./smallUtils";
 import * as f from "@myTypes/freckle-app.t"; // f for Freckle
-import spriteInfo_ from "../commands/image/spriteInfo.json";
+import spriteInfo_ from "../../shared/assets/images/utdr_talk/spriteInfo.json";
 const spriteInfo = spriteInfo_ as unknown as f.SpriteInfo;
 
 GlobalFonts.registerFromPath("assets/fonts/DeterminationMono.ttf", "Determination Mono");
