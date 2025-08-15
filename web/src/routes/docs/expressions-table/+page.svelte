@@ -26,7 +26,57 @@
 
     import { base } from "$app/paths";
     import { chars, type Whatever } from "./characters";
+    import spriteInfo from "./spriteInfo.json";
 
+    // Horrendous code. Don't even look at it.
+    function getIconStyle(charId: string, exp: number): string {
+        exp++;
+
+        // @ts-expect-error
+        let charWidth = spriteInfo[charId].portraitWidth;
+        // @ts-expect-error
+        let charHeight = spriteInfo[charId].portraitHeight;
+        // @ts-expect-error
+        let charPerRow = spriteInfo[charId].spritesheetColumns;
+
+        const ssRow = Math.ceil(exp / charPerRow);
+        const ssColumn = ((exp - 1) % charPerRow) + 1;
+
+        const ssOffsetX = ssColumn * 5 + (ssColumn - 1) * charWidth;
+        const ssOffsetY = ssRow * 5 + (ssRow - 1) * charHeight;
+
+        // if (exp === 3)
+        //     console.log("I'm on", exp, "! The x offset is", ssOffsetX, "and the y offset is", ssOffsetY, ".");
+
+        const style = `
+            width: ${charWidth}px;
+            height: ${charHeight}px;
+            scale: 2;
+            background-image: url("${base}/shared/images/utdr_talk/${charId}.png");
+            background-repeat: no-repeat;
+            background-position: -${ssOffsetX}px -${ssOffsetY}px;
+            position: absolute;
+            left: calc(${charWidth}px / 2);
+            top: calc(${charHeight}px / 2);
+        `;
+
+        return style;
+    }
+
+    function getIconContainerStyle(charId: string): string {
+        // @ts-expect-error
+        let charWidth = spriteInfo[charId].portraitWidth;
+        // @ts-expect-error
+        let charHeight = spriteInfo[charId].portraitHeight;
+
+        const style = `
+            width: calc(${charWidth}px * 2);
+            height: calc(${charHeight}px * 2 + 2rem);
+            position: relative;
+        `;
+
+        return style;
+    }
 </script>
 
 <svelte:head>
@@ -60,10 +110,12 @@
     <div style="display: flex; flex-wrap: wrap;">
         {#each { length: args.length }, i}
             <button class="exp-cont" onclick={() => navigator.clipboard.writeText((i + 1).toString())}>
-                <div>
-                    <img alt={args.id} src={`${base}/images/expressions/${args.id}/${i + 1}.png`} />
+                <div style={getIconContainerStyle(args.id)}>
+                    <div class="thumb" style={getIconStyle(args.id, i)}>
                 </div>
-                <span>{i + 1}</span>
+                <div style="position: absolute; width: 100%; height: 100%; top: 83%;">
+                    <span>{i + 1}</span>
+                </div>
             </button>
         {/each}
     </div>
@@ -83,7 +135,7 @@
 {/each}
 
 <style>
-    img {
+    .thumb {
         image-rendering: pixelated;
     }
     .exp-cont {
@@ -95,6 +147,7 @@
         background-color: rgba(255, 255, 255, 0.1);
         padding: 0.5rem;
         transition: 200ms;
+        position: relative;
     }
     .exp-cont:hover {
         background-color: rgba(255, 255, 255, 0.4);

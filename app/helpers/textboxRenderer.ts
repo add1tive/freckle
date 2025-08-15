@@ -367,8 +367,8 @@ export async function makeImageNew(
 
     if (exp > spriteInfo[character].expressionCount) exp = 1;
 
-    const charTalk = await loadImage(`assets/utdr_talk/${character}.png`);
-    const dwBox = await loadImage("assets/utdr_talk/hud/darkworld_shrunken.png");
+    const charTalk = await loadImage(`../shared/assets/images/utdr_talk/${character}.png`);
+    const dwBox = await loadImage("../shared/assets/images/utdr_talk/hud/darkworld_shrunken.png");
 
     const canvas = createCanvas(W, usingDW ? H_DW : H);
     const ctx = canvas.getContext("2d");
