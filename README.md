@@ -23,7 +23,7 @@ If you want to stop it, run:
 
 `tmux kill-session -t freckle`
 
-### Using the scripts
+### Using the bash scripts
 
 The [run script](./app/run.sh) uses the tmux method described above.
 
@@ -33,6 +33,8 @@ There is also an [update script](./app/update-run.sh) that runs `git pull` and t
 * doesn't do anything if there is nothing to pull
 
 Useful for servers where Freckle is expected to be running. I recommend setting up a cron job with it.
+
+If the scripts won't run, run `chmod +x run.sh` and `chmod +x update-run.sh`.
 
 ## Documentation
 
