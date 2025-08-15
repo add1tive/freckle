@@ -137,6 +137,7 @@
 <style>
     .thumb {
         image-rendering: pixelated;
+        background-color: black;
     }
     .exp-cont {
         width: 8rem;
