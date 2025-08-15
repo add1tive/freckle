@@ -2,6 +2,38 @@
 
 A Discord app and its website.
 
+## Running the app
+
+This is in case you want to run your own instance of Freckle.
+If you came here looking for how to use it as a user, check [Freckle's website](https://add1tive.github.io/freckle/).
+
+1. Install [NodeJS](https://nodejs.org/) and [pnpm](https://pnpm.io/).
+2. Navigate to the [app](./app) folder.
+3. Run `pnpm i`.
+4. Run `pnpx tsx index.ts`.
+
+### Using [tmux](https://github.com/tmux/tmux/wiki)
+
+Tip: if you're trying to run this on a Unix-like server, I recommend using tmux:
+
+`tmux new -d -sfreckle "pnpm tsx index.ts"`
+
+This creates a little shell session running in the background that **doesn't close when you close your SSH session**.
+If you want to stop it, run:
+
+`tmux kill-session -t freckle`
+
+### Using the scripts
+
+The [run script](./app/run.sh) uses the tmux method described above.
+
+There is also an [update script](./app/update-run.sh) that runs `git pull` and then:
+
+* restarts Freckle if something *does* get pulled
+* doesn't do anything if there is nothing to pull
+
+Useful for servers where Freckle is expected to be running. I recommend setting up a cron job with it.
+
 ## Documentation
 
 See [Freckle's website](https://add1tive.github.io/freckle/).
