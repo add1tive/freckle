@@ -46,7 +46,7 @@ export const chars: Whatever[] = [
         name: "Susie",
         href: "https://www.spriters-resource.com/pc_computer/deltarune/sheet/110471/",
         hrefTitle: "PC / Computer - Deltarune - Susie (Chapter 1&2) - The Spriters Resource",
-        length: 51
+        length: 70
     },
     {
         id: "sans",
