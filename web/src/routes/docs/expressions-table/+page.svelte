@@ -25,8 +25,11 @@
     export const title = "Textbox character expressions table";
 
     import { base } from "$app/paths";
-    import { chars, type Whatever } from "./characters";
-    import spriteInfo from "../../../../../shared/assets/images/utdr_talk/spriteInfo.json";
+    // TODO: fix these goofy imports
+    import spriteInfo_ from "../../../../../shared/assets/images/utdr_talk/spriteInfo.json";
+    import type { SpriteInfo, SpriteInfoChar, TextboxChar } from "../../../../../app/@myTypes/freckle-bot.t";
+    const spriteInfo = spriteInfo_ as unknown as SpriteInfo;
+    const characters = Object.keys(spriteInfo);
 
     // Horrendous code. Don't even look at it.
     function getIconStyle(charId: string, exp: number): string {
@@ -89,31 +92,32 @@
         <li>
             <a href="#title">{title}</a>
         </li>
-        {#each chars as char}
+        {#each characters as char}
             <li>
-                <a href={`#${char.id}`}>{char.name}</a>
+                <a href={`#${char}`}>{spriteInfo[char as unknown as TextboxChar].name}</a>
             </li>
         {/each}
     </ol>
 </div>
 
-{#snippet thingy(args: Whatever)}
-    <h2 id={args.id}>
-        <a aria-hidden="true" tabindex="-1" href={`#${args.id}`}>
+{#snippet thingy(char: string, spriteInfoChar: SpriteInfoChar)}
+    <h2 id={char}>
+        <a aria-hidden="true" tabindex="-1" href={`#${char}`}>
             <span class="material-symbols-outlined header-link">tag</span>
         </a>
-        {args.name}
+        {spriteInfoChar.name}
     </h2>
-    {#if args.href && args.hrefTitle}
+    {#if spriteInfoChar.href && spriteInfoChar.hrefTitle}
         <p>
-            <a href={args.href} target="_blank">{args.hrefTitle}</a>
+            <a href={spriteInfoChar.href} target="_blank">{spriteInfoChar.hrefTitle}</a>
         </p>
     {/if}
     <div style="display: flex; flex-wrap: wrap;">
-        {#each { length: args.length }, i}
+        {#each { length: spriteInfoChar.expressionCount }, i}
             <button class="exp-cont" onclick={() => navigator.clipboard.writeText((i + 1).toString())}>
-                <div style={getIconContainerStyle(args.id)}>
-                    <div class="thumb" style={getIconStyle(args.id, i)}>
+                <!-- svelte-ignore element_implicitly_closed -->
+                <div style={getIconContainerStyle(char)}>
+                    <div class="thumb" style={getIconStyle(char, i)}>
                 </div>
                 <div style="position: absolute; width: 100%; height: 100%; top: 83%;">
                     <span>{i + 1}</span>
@@ -138,8 +142,8 @@
 </p>
 <p>Click on a sprite to copy the ID.</p>
 
-{#each chars as char}
-    {@render thingy(char)}
+{#each characters as char}
+    {@render thingy(char, spriteInfo[char as unknown as TextboxChar])}
 {/each}
 
 <style>

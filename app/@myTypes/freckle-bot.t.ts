@@ -38,13 +38,14 @@ export type TextboxChar =
     | "noelle"
     | "susie"
     | "ralsei"
-    | "sansboss"
-    | "sans"
     | "papyrus"
     | "berdly"
-    | "carol";
+    | "carol"
+    | "sans"
+    | "sansboss";
 
 export type SpriteInfoChar = {
+    readonly name: string;
     readonly textboxOffsetX: number;
     readonly textboxOffsetY: number;
     readonly portraitWidth: number;
@@ -53,6 +54,8 @@ export type SpriteInfoChar = {
     readonly expressionCount: number;
     readonly isDarkner: boolean;
     readonly customFont: TextboxFont;
+    readonly href?: string;
+    readonly hrefTitle?: string;
 };
 
 export type SpriteInfo = {
