@@ -52,8 +52,8 @@ export type SpriteInfoChar = {
     readonly portraitHeight: number;
     readonly spritesheetColumns: number;
     readonly expressionCount: number;
-    readonly isDarkner: boolean;
-    readonly customFont: TextboxFont;
+    readonly isDarkner?: boolean;
+    readonly customFont?: TextboxFont;
     readonly href?: string;
     readonly hrefTitle?: string;
 };

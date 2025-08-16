@@ -6,9 +6,7 @@
         "portraitWidth": 54,
         "portraitHeight": 62,
         "spritesheetColumns": 21,
-        "expressionCount": 51,
-        "isDarkner": false,
-        "customFont": "none"
+        "expressionCount": 51
     },
     "susie": {
         "name": "Susie",
@@ -17,9 +15,7 @@
         "portraitWidth": 45,
         "portraitHeight": 51,
         "spritesheetColumns": 26,
-        "expressionCount": 70,
-        "isDarkner": false,
-        "customFont": "none"
+        "expressionCount": 70
     },
     "ralsei": {
         "name": "Ralsei",
@@ -29,8 +25,7 @@
         "portraitHeight": 52,
         "spritesheetColumns": 18,
         "expressionCount": 53,
-        "isDarkner": true,
-        "customFont": "none"
+        "isDarkner": true
     },
     "berdly": {
         "name": "Berdly",
@@ -39,9 +34,7 @@
         "portraitWidth": 60,
         "portraitHeight": 43 ,
         "spritesheetColumns": 11,
-        "expressionCount": 25,
-        "isDarkner": false,
-        "customFont": "none"
+        "expressionCount": 25
     },
     "carol": {
         "name": "Carol",
@@ -50,9 +43,7 @@
         "portraitWidth": 54,
         "portraitHeight": 54 ,
         "spritesheetColumns": 5,
-        "expressionCount": 10,
-        "isDarkner": false,
-        "customFont": "none"
+        "expressionCount": 10
     },
     "asgore": {
         "name": "Asgore",
@@ -61,9 +52,7 @@
         "portraitWidth": 47,
         "portraitHeight": 49 ,
         "spritesheetColumns": 15,
-        "expressionCount": 15,
-        "isDarkner": false,
-        "customFont": "none"
+        "expressionCount": 15
     },
     "sans": {
         "name": "Sans",
@@ -73,7 +62,6 @@
         "portraitHeight": 44,
         "spritesheetColumns": 7,
         "expressionCount": 7,
-        "isDarkner": false,
         "customFont": "Undertale Sans"
     },
     "papyrus": {
@@ -84,7 +72,6 @@
         "portraitHeight": 50,
         "spritesheetColumns": 6,
         "expressionCount": 19,
-        "isDarkner": false,
         "customFont": "Undertale Papyrus"
     }
 }

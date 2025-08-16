@@ -363,7 +363,7 @@ export async function makeImageNew(
     let usingDW = spriteInfo[character].isDarkner;
     let charFont = spriteInfo[character].customFont;
 
-    let fontInUse = charFont !== "none" ? charFont : DEFAULT_FONT;
+    let fontInUse = charFont ? charFont : DEFAULT_FONT;
 
     if (exp > spriteInfo[character].expressionCount) exp = 1;
 
