@@ -104,9 +104,11 @@
         </a>
         {args.name}
     </h2>
-    <p>
-        <a href={args.href} target="_blank">{args.hrefTitle}</a>
-    </p>
+    {#if args.href && args.hrefTitle}
+        <p>
+            <a href={args.href} target="_blank">{args.hrefTitle}</a>
+        </p>
+    {/if}
     <div style="display: flex; flex-wrap: wrap;">
         {#each { length: args.length }, i}
             <button class="exp-cont" onclick={() => navigator.clipboard.writeText((i + 1).toString())}>
@@ -127,7 +129,13 @@
     </a>
     {title}
 </h1>
-<p>Most sprites are from The Sprites Resource (check the links below).</p>
+<p>
+    Sprites are from The Spriters Resource's
+    <a href="https://www.spriters-resource.com/pc_computer/undertale/">Undertale</a>
+    and
+    <a href="https://www.spriters-resource.com/pc_computer/deltarune/">Deltarune</a>
+    pages unless stated otherwise.
+</p>
 <p>Click on a sprite to copy the ID.</p>
 
 {#each chars as char}
