@@ -95,12 +95,14 @@ module.exports = {
             "-framerate", "30",
             "-i", "%003d.png",
             "-vf", "scale=iw*2:ih*2:flags=neighbor",
-            "out.gif"
+            "-lossless", "0",
+            "-loop", "0",
+            "out.webp"
         ], { cwd: cachePath });
 
         ffmpeg.on("close", (code) => {
             // console.log(`ffmpeg process exited with code ${code}`);
-            interaction.editReply({ files: [`${cachePath}out.gif`] });
+            interaction.editReply({ files: [`${cachePath}out.webp`] });
         });
 
         logger.info `done with instance ${instanceName}`;
