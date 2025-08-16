@@ -42,8 +42,7 @@ export type TextboxChar =
     | "berdly"
     | "carol"
     | "asgore"
-    | "sans"
-    | "sansboss";
+    | "sans";
 
 export type SpriteInfoChar = {
     readonly name: string;

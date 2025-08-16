@@ -76,17 +76,6 @@
         "isDarkner": false,
         "customFont": "Undertale Sans"
     },
-    "sansboss": {
-        "name": "Sans (boss)",
-        "textboxOffsetX": 18,
-        "textboxOffsetY": 19,
-        "portraitWidth": 32,
-        "portraitHeight": 30,
-        "spritesheetColumns": 11,
-        "expressionCount": 22,
-        "isDarkner": false,
-        "customFont": "Undertale Sans"
-    },
     "papyrus": {
         "name": "Papyrus",
         "textboxOffsetX": 17,
