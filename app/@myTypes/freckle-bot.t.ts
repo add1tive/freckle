@@ -41,7 +41,8 @@ export type TextboxChar =
     | "sansboss"
     | "sans"
     | "papyrus"
-    | "berdly";
+    | "berdly"
+    | "carol";
 
 export type SpriteInfoChar = {
     readonly textboxOffsetX: number;

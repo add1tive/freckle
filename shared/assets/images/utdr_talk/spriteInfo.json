@@ -68,5 +68,15 @@
         "expressionCount": 25,
         "isDarkner": false,
         "customFont": "none"
+    },
+    "carol": {
+        "textboxOffsetX": 9,
+        "textboxOffsetY": 11,
+        "portraitWidth": 54,
+        "portraitHeight": 54 ,
+        "spritesheetColumns": 5,
+        "expressionCount": 10,
+        "isDarkner": false,
+        "customFont": "none"
     }
 }
