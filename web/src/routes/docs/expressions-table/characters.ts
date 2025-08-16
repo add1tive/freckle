@@ -35,7 +35,7 @@ export const chars: Whatever[] = [
     {
         id: "ralsei",
         name: "Ralsei",
-        length: 51
+        length: 53
     },
     {
         id: "susie",
