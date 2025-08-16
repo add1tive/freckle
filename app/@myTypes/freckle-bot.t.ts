@@ -41,6 +41,7 @@ export type TextboxChar =
     | "papyrus"
     | "berdly"
     | "carol"
+    | "asgore"
     | "sans"
     | "sansboss";
 

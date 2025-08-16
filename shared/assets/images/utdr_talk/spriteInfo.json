@@ -54,6 +54,17 @@
         "isDarkner": false,
         "customFont": "none"
     },
+    "asgore": {
+        "name": "Asgore",
+        "textboxOffsetX": 13,
+        "textboxOffsetY": 14,
+        "portraitWidth": 47,
+        "portraitHeight": 49 ,
+        "spritesheetColumns": 15,
+        "expressionCount": 15,
+        "isDarkner": false,
+        "customFont": "none"
+    },
     "sans": {
         "name": "Sans",
         "textboxOffsetX": 17,
