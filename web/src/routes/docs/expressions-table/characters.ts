@@ -68,5 +68,12 @@ export const chars: Whatever[] = [
         href: "https://www.spriters-resource.com/pc_computer/undertale/sheet/76014/",
         hrefTitle: "PC / Computer - Undertale - Papyrus - The Spriters Resource" ,
         length: 19
+    },
+    {
+        id: "berdly",
+        name: "Berdly",
+        href: "https://www.spriters-resource.com/pc_computer/deltarune/sheet/110751/",
+        hrefTitle: "PC / Computer - Deltarune - Berdly - The Spriters Resource",
+        length: 25
     }
 ];

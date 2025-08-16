@@ -58,5 +58,15 @@
         "expressionCount": 19,
         "isDarkner": false,
         "customFont": "Undertale Papyrus"
+    },
+    "berdly": {
+        "textboxOffsetX": 11,
+        "textboxOffsetY": 15,
+        "portraitWidth": 60,
+        "portraitHeight": 43 ,
+        "spritesheetColumns": 11,
+        "expressionCount": 25,
+        "isDarkner": false,
+        "customFont": "none"
     }
 }
