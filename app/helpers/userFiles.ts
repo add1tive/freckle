@@ -28,12 +28,14 @@ import { getLogger } from "@logtape/logtape";
 const logger_ = getLogger(["freckle-app"]);
 const logger = logger_.getChild("userFiles");
 
-const ALGORITHM = "aes-128-cbc";
+const ALGORITHM = "aes-256-cbc";
 const IV_LENGTH = 16; // in bytes
 const HASH_LENGTH = 12 * 2;
 const FILE_HEADER = "FRECKLE";
 
-const key = Buffer.from(localSettings.key, "hex");
+function getKey(userId: string) {
+    return crypto.createHash("sha256").update(userId + localSettings.secret).digest();
+}
 
 function getHash(userId: string) {
     return crypto.createHash("sha256").update(userId).digest("hex").substring(0, HASH_LENGTH);
@@ -41,7 +43,7 @@ function getHash(userId: string) {
 
 function encrypt(data: crypto.BinaryLike, userId: string) {
     const iv = crypto.randomBytes(IV_LENGTH);
-    const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
+    const cipher = crypto.createCipheriv(ALGORITHM, getKey(userId), iv);
 
     return Buffer.concat([
         Buffer.from(FILE_HEADER, "ascii"),
@@ -53,7 +55,7 @@ function encrypt(data: crypto.BinaryLike, userId: string) {
 
 function decrypt(data: Buffer, userId: string) {
     const iv = data.slice(FILE_HEADER.length, IV_LENGTH + FILE_HEADER.length);
-    const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
+    const decipher = crypto.createDecipheriv(ALGORITHM, getKey(userId), iv);
 
     return Buffer.concat([
         decipher.update(data.slice(FILE_HEADER.length + IV_LENGTH)),
