@@ -19,44 +19,63 @@
  */
 
 import { getLogger } from "@logtape/logtape";
-import { TextboxChar } from "$shared/types/freckle.t";
-import { ChatInputCommandInteraction } from "discord.js";
+import { TextboxChar, textboxChars } from "$shared/types/freckle.t";
+import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
 import { loadUserSettings, saveUserSettings } from "helpers/userFiles";
 
 const logger_ = getLogger(["freckle-app"]);
 const logger = logger_.getChild("changechar");
 
-async function dothis(userId: string, character: TextboxChar) {
-    let userSettings = loadUserSettings(userId);
-
-    if (userSettings)
-        userSettings.character = character;
-    else
-        userSettings = { character };
-
-    saveUserSettings(userId, userSettings);
-}
-
 module.exports = {
-	data: {
+    data: {
         options: [
-        {
-            type: 3,
-            name: "character",
-            description: "The character",
-            required: true
-        }
+            {
+                type: 3,
+                name: "character",
+                description: "The character",
+                required: true
+            }
         ],
         name: "setdefault",
         description: "Sets user's default character",
-        "integration_types": [1],
-        "contexts": [0, 1, 2]
+        integration_types: [1],
+        contexts: [0, 1, 2]
     },
-	async execute(interaction: ChatInputCommandInteraction) {
+    async execute(interaction: ChatInputCommandInteraction) {
         const userId = interaction.user.id;
-        const character = interaction.options.getString("character") as TextboxChar;
+        const character = interaction.options.getString("character");
 
-        await dothis(userId, character);
-        await interaction.reply("changed to " + character);
-	},
+        const embed = new EmbedBuilder()
+            .setAuthor({
+                name: "Freckle",
+                url: "https://add1tive.github.io/freckle/"
+            })
+            .setTitle("Set default textbox character")
+            .setFooter({
+                text: "Freckle",
+                iconURL: "https://us-east-1.tixte.net/uploads/add1tive.tixte.co/favicon.png"
+            })
+            .setTimestamp();
+
+        // @ts-expect-error
+        if (textboxChars.includes(character)) {
+            let userSettings = loadUserSettings(userId);
+
+            if (userSettings) userSettings.character = character as TextboxChar;
+            else userSettings = { character: character as TextboxChar };
+
+            saveUserSettings(userId, userSettings);
+
+            // prettier-ignore
+            embed
+                .setColor("#00b0f4")
+                .setDescription(`Changed to \`${character}\`.`);
+        } else {
+            embed
+                .setColor("#ff5555")
+                .setDescription(`Failed to change character: \`${character}\` doesn't exist.`);
+        }
+
+        await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+    }
 };

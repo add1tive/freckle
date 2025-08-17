@@ -30,15 +30,18 @@ export type TextboxFont =
     | "Undertale Sans"
     | "Undertale Papyrus";
 
-export type TextboxChar =
-    | "noelle"
-    | "susie"
-    | "ralsei"
-    | "papyrus"
-    | "berdly"
-    | "carol"
-    | "asgore"
-    | "sans";
+export const textboxChars = [
+    "noelle",
+    "susie",
+    "ralsei",
+    "papyrus",
+    "berdly",
+    "carol",
+    "asgore",
+    "sans"
+] as const;
+
+export type TextboxChar = typeof textboxChars[number];
 
 export type SpriteInfoChar = {
     readonly name: string;
