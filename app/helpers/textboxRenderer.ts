@@ -51,7 +51,7 @@ const TEXT_START_X = 87;
 const TEXT_START_Y = 23;
 const TEXT_START_X_DW_OFFSET = 3;
 const TEXT_START_Y_DW_OFFSET = 3;
-const TEXT_MAX_WIDTH = 23 * 8;
+const TEXT_MAX_WIDTH = 23 * 7;
 
 // THIS FUNCTION IS NOT MEANT TO BE READABLE
 // don't laugh at how "bad" this code is
@@ -263,7 +263,8 @@ async function render(
         if (salad[i] !== "$" || salad[i] === "$" && skipNextDlrSign)
         {
             // figure out whether to switch to a new line
-            const word = text.slice(i, text.indexOf(" ", i)); // current word
+            let word = text.slice(i, text.indexOf(" ", i)); // current word
+            if (word.includes("$")) word = word.slice(0, word.indexOf("$"));
             const lMetr = ctx.measureText(word).width; // current word width in pixels
             if (x + lMetr > maxWidth && lMetr <= maxWidth)
             {
@@ -310,7 +311,13 @@ async function render(
                 const rawCmd = text.slice(i + 2, text.indexOf("}", i + 2));
 
                 const cmd = processCommand(rawCmd);
-                if (cmd) currCmds.push(cmd);
+                if (cmd)
+                {
+                    if (cmd.name === "reset")
+                        currCmds = [];
+                    else
+                        currCmds.push(cmd);
+                }
 
                 i = i + rawCmd.length + 2; // make i skip to after the command
             }
@@ -378,7 +385,6 @@ export async function makeImageNew(
     let fontInUse = charFont ? charFont : DEFAULT_FONT;
 
     if (exp > spriteInfo[character].expressionCount) exp = 1;
-
 
     const dwBox = await loadImage("../shared/assets/images/utdr_talk/hud/darkworld_shrunken.png");
 
