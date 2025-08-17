@@ -18,20 +18,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import fs from "node:fs";
 import { getLogger } from "@logtape/logtape";
 import { TextboxChar } from "$shared/types/freckle.t";
 import { ChatInputCommandInteraction } from "discord.js";
+import { loadUserSettings, saveUserSettings } from "helpers/userFiles";
 
 const logger_ = getLogger(["freckle-app"]);
 const logger = logger_.getChild("changechar");
 
-async function dothis(username: string, character: TextboxChar) {
-    let userSettings = JSON.parse(fs.readFileSync("./local/userconfig.json", "utf8")); // is utf8 necessary?
-    userSettings["users"][username] = {
-        character: character
-    };
-    fs.writeFileSync("./local/userconfig.json", JSON.stringify(userSettings, null, 2));
+async function dothis(userId: string, character: TextboxChar) {
+    let userSettings = loadUserSettings(userId);
+
+    if (userSettings)
+        userSettings.character = character;
+    else
+        userSettings = { character };
+
+    saveUserSettings(userId, userSettings);
 }
 
 module.exports = {
@@ -50,10 +53,10 @@ module.exports = {
         "contexts": [0, 1, 2]
     },
 	async execute(interaction: ChatInputCommandInteraction) {
-        const username = interaction.user.username;
+        const userId = interaction.user.id;
         const character = interaction.options.getString("character") as TextboxChar;
 
-        await dothis(username, character);
+        await dothis(userId, character);
         await interaction.reply("changed to " + character);
 	},
 };

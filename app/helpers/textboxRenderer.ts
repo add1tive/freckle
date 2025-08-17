@@ -27,12 +27,13 @@ import { createCanvas, loadImage, GlobalFonts, Canvas, SKRSContext2D } from "@na
 // LogTape
 import { getLogger } from "@logtape/logtape";
 const logger_ = getLogger(["freckle-app"]);
-const logger = logger_.getChild("textboxa");
+const logger = logger_.getChild("textboxRender");
 
 // Freckle
 import { getRandomIntInclusive } from "./smallUtils";
 import * as f from "$shared/types/freckle.t"; // f for Freckle
 import spriteInfo_ from "$shared/assets/images/utdr_talk/spriteInfo.json";
+import { loadUserSettings } from "./userFiles";
 const spriteInfo = spriteInfo_ as unknown as f.SpriteInfo;
 
 GlobalFonts.registerFromPath("assets/fonts/DeterminationMono.ttf", "Determination Mono");
@@ -351,22 +352,22 @@ export async function makeImageNew(
     exp: number | null,
     size: number | null,
     character: f.TextboxChar | null,
-    username: string,
+    userId: string,
     cachePath: string | null = null
 ): Promise<Buffer<ArrayBufferLike>> // the final frame
 {
     if (text === null) text = ""; // TODO: change this...?
 
-    let userSettings = JSON.parse(await fs.readFile("./local/userconfig.json", "utf8")) as f.UserSettings;
+    let userSettings = loadUserSettings(userId);
 
     if (exp === null) exp = 1;
     if (size === null) size = 2;
     if (character === null)
     {
-        if (userSettings.users[username])
+        if (userSettings)
         {
-            if (userSettings.users[username].character)
-                character = userSettings.users[username].character;
+            if (userSettings.character)
+                character = userSettings.character;
             else
                 character = DEFAULT_CHAR;
         }

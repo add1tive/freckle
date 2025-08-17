@@ -55,12 +55,6 @@ module.exports = {
                 name: "character",
                 description: "The character to be displayed (set your default with /setdefault)",
                 required: false
-            },
-            {
-                type: 4,
-                name: "size",
-                description: "Size (multiplier) of the textbox (default: 2)",
-                required: false
             }
         ],
         name: "textboxa",
@@ -69,7 +63,7 @@ module.exports = {
         contexts: [0, 1, 2]
     },
 	async execute(interaction: ChatInputCommandInteraction) {
-        let instanceName = randomBytes(8).toString("hex");
+        let instanceName = randomBytes(12).toString("hex");
         logger.info `received request, assigning name ${instanceName}`;
 
         let cachePath = "./local/cache/" + instanceName + "/";
@@ -83,12 +77,12 @@ module.exports = {
         const charexp = interaction.options.getInteger("charexp");
         let character = interaction.options.getString("character") as TextboxChar | null;
         const size = 2; // used to be customisable, disabled probably forever
-        const username = interaction.user.username;
+        const userId = interaction.user.id;
 
         if (character !== null) character = character.toLowerCase() as TextboxChar;
 
         await interaction.deferReply();
-        await makeImageNew(text, charexp, size, character, username, cachePath);
+        await makeImageNew(text, charexp, size, character, userId, cachePath);
 
         const ffmpeg = spawn("ffmpeg", [
             "-f", "image2",

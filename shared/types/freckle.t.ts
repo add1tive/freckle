@@ -20,11 +20,7 @@
 
 // general
 export type UserSettingsC = {
-    readonly character: TextboxChar;
-};
-
-export type UserSettings = {
-    readonly users: { [T in string]: UserSettingsC };
+    character: TextboxChar;
 };
 
 // textbox

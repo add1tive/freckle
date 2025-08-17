@@ -62,7 +62,7 @@ module.exports = {
         "contexts": [0, 1, 2]
     },
 	async execute(interaction: ChatInputCommandInteraction) {
-        let instanceName = randomBytes(8).toString("hex");
+        let instanceName = randomBytes(12).toString("hex");
         // fs.mkdirSync("cache/" + instanceName, {recursive: true});
         logger.info `received request, assigning name ${instanceName}`;
 
@@ -70,10 +70,10 @@ module.exports = {
         const charexp = interaction.options.getInteger("charexp");
         let character = interaction.options.getString("character") as TextboxChar | null;
         const size = 2; // used to be customisable, disabled probably forever
-        const username = interaction.user.username;
+        const userId = interaction.user.id;
 
         if (character !== null) character = character.toLowerCase() as TextboxChar;
-        const attachment = new AttachmentBuilder(await makeImageNew(text, charexp, size, character, username), { name: "image.png" });
+        const attachment = new AttachmentBuilder(await makeImageNew(text, charexp, size, character, userId), { name: "image.png" });
 
 		await interaction.reply({ files: [attachment] });
 	},
