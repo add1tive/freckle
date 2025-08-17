@@ -147,6 +147,7 @@ async function actuallyRender(
     glowCtx.font = 16 * size + "px " + font;
     glowCtx.fillStyle = "#ffffff";
 
+    let glow_wasOnAtAll = false;
     let glow_isOn = false;
     let glow_lastFilter = "none";
     let glow_lastLoopLetterRender = 1;
@@ -157,6 +158,7 @@ async function actuallyRender(
             glow_lastFilter = `drop-shadow(0 0 ${cmd.args.radius} ${cmd.args.color})`;
             glow_lastLoopLetterRender = cmd.args.strength;
             glow_isOn = true;
+            glow_wasOnAtAll = true;
         },
         color: function(cmd: f.TextBoxCommand_Color)
         {
@@ -202,9 +204,17 @@ async function actuallyRender(
     }
 
     // render glow -- LIMITATION! only one glow effect per frame; using last specified
-    ctx.filter = glow_lastFilter;
-    for (let i = 0; i < glow_lastLoopLetterRender; i++)
-        ctx.drawImage(glowCanvas, 0, 0);
+    if (glow_wasOnAtAll)
+    {
+        const glowCanvas2 = createCanvas(canvas.width, canvas.height);
+        const glowCtx2 = glowCanvas2.getContext("2d");
+
+        glowCtx2.filter = glow_lastFilter;
+        glowCtx2.drawImage(glowCanvas, 0, 0);
+
+        for (let i = 0; i < glow_lastLoopLetterRender; i++)
+            ctx.drawImage(glowCanvas2, 0, 0);
+    }
 
     await saveFrameIfExporting(frameNumber, canvas, exportTo);
 }
