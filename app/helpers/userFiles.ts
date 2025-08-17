@@ -29,52 +29,46 @@ const logger_ = getLogger(["freckle-app"]);
 const logger = logger_.getChild("userFiles");
 
 const ALGORITHM = "aes-128-cbc";
+const IV_LENGTH = 16; // in bytes
 const HASH_LENGTH = 12 * 2;
+const FILE_HEADER = "FRECKLE";
 
-function getHashAndKey(userId: string) {
-    const hash = crypto
-        .createHash("sha256")
-        .update(userId + localSettings.salt)
-        .digest("hex");
-    const key = crypto.scryptSync(hash, localSettings.salt, 16);
+const key = Buffer.from(localSettings.key, "hex");
 
-    return { hash, key };
+function getHash(userId: string) {
+    return crypto.createHash("sha256").update(userId).digest("hex").substring(0, HASH_LENGTH);
 }
 
 function encrypt(data: crypto.BinaryLike, userId: string) {
-    const cipher = crypto.createCipheriv(
-        ALGORITHM,
-        getHashAndKey(userId).key,
-        Buffer.from(localSettings.iv, "hex")
-    );
+    const iv = crypto.randomBytes(IV_LENGTH);
+    const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
 
-    return Buffer.concat([cipher.update(data), cipher.final()]);
+    return Buffer.concat([
+        Buffer.from(FILE_HEADER, "ascii"),
+        iv,
+        cipher.update(data),
+        cipher.final()
+    ]);
 }
 
 function decrypt(data: Buffer, userId: string) {
-    const decipher = crypto.createDecipheriv(
-        ALGORITHM,
-        getHashAndKey(userId).key,
-        Buffer.from(localSettings.iv, "hex")
-    );
+    const iv = data.slice(FILE_HEADER.length, IV_LENGTH + FILE_HEADER.length);
+    const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
 
-    return Buffer.concat([decipher.update(data), decipher.final()]);
+    return Buffer.concat([
+        decipher.update(data.slice(FILE_HEADER.length + IV_LENGTH)),
+        decipher.final()
+    ]);
 }
 
 // sync, not async
 export function saveUserSettings(userId: string, userSettings: UserSettingsC) {
-    const hash = getHashAndKey(userId).hash.substring(0, HASH_LENGTH);
+    const hash = getHash(userId);
     const path = `./local/user_files/${hash}/`;
 
     try {
         fs.mkdirSync(path, { recursive: true });
-        fs.writeFileSync(
-            path + "settings.bin",
-            Buffer.concat([
-                Buffer.from("FRECKLE", "ascii"), // for flair :P
-                encrypt(JSON.stringify(userSettings), userId)
-            ])
-        );
+        fs.writeFileSync(path + "settings.bin", encrypt(JSON.stringify(userSettings), userId));
         logger.info`Successfully saved settings for ${hash}`;
 
         return true;
@@ -85,14 +79,21 @@ export function saveUserSettings(userId: string, userSettings: UserSettingsC) {
     }
 }
 export function loadUserSettings(userId: string): UserSettingsC | null {
-    const hash = getHashAndKey(userId).hash.substring(0, HASH_LENGTH);
+    const hash = getHash(userId);
+    const fpath = `./local/user_files/${hash}/settings.bin`;
 
     try {
-        const file = fs.readFileSync(`./local/user_files/${hash}/settings.bin`);
-        const decrypted = decrypt(file.slice(7), userId).toString();
-        logger.info`Successfully loaded settings for ${hash}`;
+        if (fs.existsSync(fpath)) {
+            const file = fs.readFileSync(`./local/user_files/${hash}/settings.bin`);
+            const decrypted = decrypt(file, userId).toString();
+            logger.info`Successfully loaded settings for ${hash}`;
 
-        return JSON.parse(decrypted);
+            return JSON.parse(decrypted);
+        } else {
+            logger.info`User ${hash} has no settings file`;
+
+            return null;
+        }
     } catch (error) {
         logger.error`Failed to load settings for ${hash}: ${error}`;
 
