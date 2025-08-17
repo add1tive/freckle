@@ -31,7 +31,7 @@ const logger_ = getLogger(["freckle-app"]);
 const logger = logger_.getChild("textbox");
 
 // Freckle
-import { TextboxChar } from "@myTypes/freckle-app.t";
+import { TextboxChar } from "$shared/types/freckle.t";
 import { makeImageNew } from "helpers/textboxRenderer";
 
 module.exports = {

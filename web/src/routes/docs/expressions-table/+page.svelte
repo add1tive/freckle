@@ -25,9 +25,8 @@
     export const title = "Textbox character expressions table";
 
     import { base } from "$app/paths";
-    // TODO: fix these goofy imports
-    import spriteInfo_ from "../../../../../shared/assets/images/utdr_talk/spriteInfo.json";
-    import type { SpriteInfo, SpriteInfoChar, TextboxChar } from "../../../../../app/@myTypes/freckle-bot.t";
+    import spriteInfo_ from "$shared/assets/images/utdr_talk/spriteInfo.json";
+    import type { SpriteInfo, SpriteInfoChar, TextboxChar } from "$shared/types/freckle.t";
     const spriteInfo = spriteInfo_ as unknown as SpriteInfo;
     const characters = Object.keys(spriteInfo);
 

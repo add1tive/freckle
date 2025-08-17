@@ -20,7 +20,7 @@
 
 import fs from "node:fs";
 import { getLogger } from "@logtape/logtape";
-import { TextboxChar } from "@myTypes/freckle-app.t";
+import { TextboxChar } from "$shared/types/freckle.t";
 import { ChatInputCommandInteraction } from "discord.js";
 
 const logger_ = getLogger(["freckle-app"]);
