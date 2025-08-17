@@ -16,6 +16,8 @@ Freckle can generate textboxes (currently on UNDERTALE/DELTARUNE) akin to [Under
 
 Has an animated (`/textboxa`) and static (`/textbox`) version.
 
+All textboxes are rendered at 2x scale.
+
 An example of such command:
 
 ![Screenshot of the /textboxa command output in the Discord client]({base}/images/docs/textbox-1.png)
@@ -27,6 +29,5 @@ Both take the same arguments.
 * `text`: A string. See [Textbox commands](./textbox-commands). No default, required.
 * `charexp`: An integer. See [Expressions table](./expressions-table). Default is `1`.
 * `character`: A string. Must be one of the characters seen in [Expressions table](./expressions-table). Case-insensitive. Default is `noelle`.
-* `size`: An integer. Multiplies the image's size by the amount specified (eg. `2` for two times the size). Default is `2`.
 
 (integer = whole number)

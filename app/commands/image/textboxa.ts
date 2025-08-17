@@ -82,7 +82,7 @@ module.exports = {
         const text = interaction.options.getString("text");
         const charexp = interaction.options.getInteger("charexp");
         let character = interaction.options.getString("character") as TextboxChar | null;
-        const size = interaction.options.getInteger("size");
+        const size = 2; // used to be customisable, disabled probably forever
         const username = interaction.user.username;
 
         if (character !== null) character = character.toLowerCase() as TextboxChar;
@@ -94,7 +94,6 @@ module.exports = {
             "-f", "image2",
             "-framerate", "30",
             "-i", "%003d.png",
-            // "-vf", "scale=iw*2:ih*2:flags=neighbor",
             "-lossless", "1",
             "-loop", "0",
             "out.webp"

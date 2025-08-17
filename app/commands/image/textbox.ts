@@ -54,12 +54,6 @@ module.exports = {
                 name: "character",
                 description: "The character to be displayed (set your default with /setdefault)",
                 required: false
-            },
-            {
-                type: 4,
-                name: "size",
-                description: "Size (multiplier) of the textbox (default: 2)",
-                required: false
             }
         ],
         name: "textbox",
@@ -75,7 +69,7 @@ module.exports = {
         const text = interaction.options.getString("text");
         const charexp = interaction.options.getInteger("charexp");
         let character = interaction.options.getString("character") as TextboxChar | null;
-        const size = interaction.options.getInteger("size");
+        const size = 2; // used to be customisable, disabled probably forever
         const username = interaction.user.username;
 
         if (character !== null) character = character.toLowerCase() as TextboxChar;
