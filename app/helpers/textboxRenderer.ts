@@ -131,11 +131,12 @@ async function actuallyRender(
     ogCanvas: Canvas,
     ctx: SKRSContext2D,
     content: f.TextboxObject[],
-    exportTo: string | null = null,
-    font: f.TextboxFont = DEFAULT_FONT, // currently unused
-    startX: number = TEXT_START_X,
-    startY: number = TEXT_START_Y,
-    frameNumber: number = 0
+    exportTo: string | null,
+    font: f.TextboxFont, // currently unused
+    startX: number,
+    startY: number,
+    frameNumber: number,
+    size: number
 ) {
     // necessary for some reason or else The Evil First Letter Bug will occur
     ctx.fillStyle = "#ffffff";
@@ -143,7 +144,7 @@ async function actuallyRender(
     const glowCanvas = createCanvas(canvas.width, canvas.height);
     const glowCtx = glowCanvas.getContext("2d");
     glowCtx.imageSmoothingEnabled = false;
-    glowCtx.font = "16px " + font;
+    glowCtx.font = 16 * size + "px " + font;
     glowCtx.fillStyle = "#ffffff";
 
     let glow_isOn = false;
@@ -212,11 +213,12 @@ async function render(
     canvas_: Canvas,
     ctx_: SKRSContext2D,
     text: string,
-    exportTo: string | null = null,
-    font: f.TextboxFont = DEFAULT_FONT,
-    startX: number = TEXT_START_X,
-    startY: number = TEXT_START_Y,
-    maxWidth: number = TEXT_MAX_WIDTH
+    exportTo: string | null,
+    font: f.TextboxFont,
+    startX: number,
+    startY: number,
+    maxWidth: number,
+    size: number
 ): Promise<Canvas>
 {
     let frameNumber = 0;
@@ -224,7 +226,7 @@ async function render(
     const canvas = createCanvas(canvas_.width, canvas_.height);
     const ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = false;
-    ctx.font = "16px " + font;
+    ctx.font = 16 * size + "px " + font;
 
     // light world variant:
     // 22 chars in one line, 24 for Papyrus
@@ -233,7 +235,7 @@ async function render(
 
     // save first frame if animated
     if (exportTo !== null)
-        await actuallyRender(canvas, canvas_, ctx, [], exportTo, font, startX, startY);
+        await actuallyRender(canvas, canvas_, ctx, [], exportTo, font, startX, startY, 0, size);
 
     let objList: f.TextboxObject[] = [];
 
@@ -260,7 +262,7 @@ async function render(
             }
 
             // const w = 8;
-            const h = 18;
+            const h = 18 * size;
 
             objList.push({
                 content: salad[i],
@@ -274,7 +276,7 @@ async function render(
             // render and export frame if animated
             if (exportTo !== null)
             {
-                await actuallyRender(canvas, canvas_, ctx, objList, exportTo, font, startX, startY, frameNumber);
+                await actuallyRender(canvas, canvas_, ctx, objList, exportTo, font, startX, startY, frameNumber, size);
             }
             frameNumber++;
 
@@ -316,13 +318,13 @@ async function render(
     {
         for (let i = 0; i < FPS * 2; i++)
         {
-            await actuallyRender(canvas, canvas_, ctx, objList, exportTo, font, startX, startY, frameNumber);
+            await actuallyRender(canvas, canvas_, ctx, objList, exportTo, font, startX, startY, frameNumber, size);
             frameNumber++;
         }
     }
     // render once if not animated
     else
-        await actuallyRender(canvas, canvas_, ctx, objList, exportTo, font, startX, startY);
+        await actuallyRender(canvas, canvas_, ctx, objList, exportTo, font, startX, startY, 0, size);
 
     return canvas;
 }
@@ -367,21 +369,21 @@ export async function makeImageNew(
 
     if (exp > spriteInfo[character].expressionCount) exp = 1;
 
-    const charTalk = await loadImage(`../shared/assets/images/utdr_talk/${character}.png`);
+
     const dwBox = await loadImage("../shared/assets/images/utdr_talk/hud/darkworld_shrunken.png");
 
-    const canvas = createCanvas(W, usingDW ? H_DW : H);
+    const canvas = createCanvas(W * size, usingDW ? H_DW * size : H * size);
     const ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = false;
 
-    ctx.font = "16px " + DEFAULT_FONT;
+    ctx.font = 16 * size + "px " + DEFAULT_FONT;
 
     if (!usingDW)
     {
-        ctx.lineWidth = 4;
+        ctx.lineWidth = 4 * size;
         ctx.strokeStyle = "#ffffff";
         ctx.fillStyle = "#000000";
-        ctx.fillRect(0, 0, W, H);
+        ctx.fillRect(size, size, W * size, H * size);
         ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
     }
     else
@@ -397,44 +399,38 @@ export async function makeImageNew(
     const ssOffsetX = ssColumn * 5 + (ssColumn - 1) * charWidth;
     const ssOffsetY = ssRow * 5 + (ssRow - 1) * charHeight;
 
-    ctx.drawImage(charTalk,
+    const charTalkOg = await loadImage(`../shared/assets/images/utdr_talk/${character}.png`);
+    const charTalkCanvas = createCanvas(charWidth, charHeight);
+    const charTalkCtx = charTalkCanvas.getContext("2d");
+    charTalkCtx.drawImage(charTalkOg,
         ssOffsetX, ssOffsetY, charWidth, charHeight,
-        charTBoffsetX, charTBoffsetY, charWidth, charHeight
+        0, 0, charWidth, charHeight
     );
 
-    let startX = TEXT_START_X;
-    let startY = TEXT_START_Y;
-    if (character === "papyrus") startX = ASTERISK_X;
-    if (usingDW)
-    {
-        startX += TEXT_START_X_DW_OFFSET;
-        startY += TEXT_START_Y_DW_OFFSET;
-    }
+    ctx.drawImage(charTalkCanvas,
+        charTBoffsetX * size, charTBoffsetY * size, charWidth * size, charHeight * size
+    );
 
-    let asteriskX = ASTERISK_X;
-    let asteriskY = ASTERISK_Y;
+    let startX = TEXT_START_X * size;
+    let startY = TEXT_START_Y * size;
+    let asteriskX = ASTERISK_X * size;
+    let asteriskY = ASTERISK_Y * size;
+
+    if (character === "papyrus") startX = asteriskX;
     if (usingDW)
     {
-        asteriskX += TEXT_START_X_DW_OFFSET;
-        asteriskY += TEXT_START_Y_DW_OFFSET;
+        startX += TEXT_START_X_DW_OFFSET * size;
+        startY += TEXT_START_Y_DW_OFFSET * size;
+    }
+    if (usingDW)
+    {
+        asteriskX += TEXT_START_X_DW_OFFSET * size;
+        asteriskY += TEXT_START_Y_DW_OFFSET * size;
     }
     if (character !== "papyrus") ctx.fillText("*", asteriskX, asteriskY);
 
     let textMaxWidth = usingDW ? TEXT_MAX_WIDTH - TEXT_START_X_DW_OFFSET * 8 : TEXT_MAX_WIDTH;
-    const finalCanvas = await render(canvas, ctx, text, cachePath, fontInUse, startX, startY, textMaxWidth);
+    const finalCanvas = await render(canvas, ctx, text, cachePath, fontInUse, startX, startY, textMaxWidth * size, size);
 
-    if (cachePath === null)
-    {
-        const resCanvas = createCanvas(canvas.width * size, canvas.height * size);
-        const resCtx = resCanvas.getContext("2d");
-        resCtx.imageSmoothingEnabled = false;
-
-        resCtx.drawImage(finalCanvas, 0, 0, canvas.width * size, canvas.height * size);
-
-        return resCanvas.encode("png");
-    }
-    else
-    {
-        return finalCanvas.encode("png");
-    }
+    return finalCanvas.encode("png");
 }

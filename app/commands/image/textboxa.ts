@@ -94,7 +94,7 @@ module.exports = {
             "-f", "image2",
             "-framerate", "30",
             "-i", "%003d.png",
-            "-vf", "scale=iw*2:ih*2:flags=neighbor",
+            // "-vf", "scale=iw*2:ih*2:flags=neighbor",
             "-lossless", "0",
             "-loop", "0",
             "out.webp"
