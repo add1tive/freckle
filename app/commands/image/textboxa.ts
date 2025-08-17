@@ -95,7 +95,7 @@ module.exports = {
             "-framerate", "30",
             "-i", "%003d.png",
             // "-vf", "scale=iw*2:ih*2:flags=neighbor",
-            "-lossless", "0",
+            "-lossless", "1",
             "-loop", "0",
             "out.webp"
         ], { cwd: cachePath });
