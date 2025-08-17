@@ -114,11 +114,10 @@
     <div style="display: flex; flex-wrap: wrap;">
         {#each { length: spriteInfoChar.expressionCount }, i}
             <button class="exp-cont" onclick={() => navigator.clipboard.writeText((i + 1).toString())}>
-                <!-- svelte-ignore element_implicitly_closed -->
                 <div style={getIconContainerStyle(char)}>
                     <div class="thumb" style={getIconStyle(char, i)}>
                 </div>
-                <div style="position: absolute; width: 100%; height: 100%; top: 83%;">
+                <div class="table-num-container">
                     <span>{i + 1}</span>
                 </div>
             </button>
@@ -168,5 +167,14 @@
     .exp-cont:active {
         background-color: rgba(255, 255, 255, 0.3);
         cursor: pointer;
+    }
+    .table-num-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: end;
+        justify-content: center;
+        pointer-events: none;
     }
 </style>
