@@ -20,7 +20,7 @@
 
 import crypto from "crypto";
 import fs from "node:fs";
-import { UserSettingsC } from "$shared/types/freckle.t";
+import { UserSettingsC } from "@freckle-a1e/shared/types/freckle.t";
 
 // LogTape
 import { getLogger } from "@logtape/logtape";

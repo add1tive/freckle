@@ -32,7 +32,7 @@ const logger = getLogger(["freckle-app"]).getChild("textboxa");
 
 // Freckle
 import { makeImageNew } from "helpers/textboxRenderer";
-import { TextboxChar } from "$shared/types/freckle.t";
+import { TextboxChar } from "@freckle-a1e/shared/types/freckle.t";
 
 export const data = {
     options: [

@@ -30,7 +30,7 @@ import { getLogger } from "@logtape/logtape";
 const logger = getLogger(["freckle-app"]).getChild("textbox");
 
 // Freckle
-import { TextboxChar } from "$shared/types/freckle.t";
+import { TextboxChar } from "@freckle-a1e/shared/types/freckle.t";
 import { makeImageNew } from "helpers/textboxRenderer";
 
 export const data = {

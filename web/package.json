@@ -1,7 +1,10 @@
 {
-    "name": "freckle-web",
-    "private": true,
+    "name": "@freckle-a1e/web",
+    "description": "Freckle's website",
     "version": "0.0.1",
+    "author": "add1tive",
+    "license": "(MIT OR GPL-3.0)",
+    "private": true,
     "type": "module",
     "scripts": {
         "dev": "vite dev",
@@ -25,12 +28,8 @@
         "typescript": "^5.0.0",
         "vite": "^6.2.6"
     },
-    "pnpm": {
-        "onlyBuiltDependencies": [
-            "esbuild"
-        ]
-    },
     "dependencies": {
+        "@freckle-a1e/shared": "workspace:*",
         "@jsdevtools/rehype-toc": "^3.0.2",
         "material-symbols": "^0.32.0",
         "modern-normalize": "^3.0.1",

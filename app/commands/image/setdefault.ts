@@ -19,7 +19,7 @@
  */
 
 import { getLogger } from "@logtape/logtape";
-import { TextboxChar } from "$shared/types/freckle.t";
+import { TextboxChar, textboxChars } from "@freckle-a1e/shared/types/freckle.t";
 import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
 import { loadUserSettings, saveUserSettings } from "helpers/userFiles";
 
@@ -56,12 +56,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         })
         .setTimestamp();
 
-    if (
-        ["noelle", "susie", "ralsei", "papyrus", "berdly", "carol", "asgore", "sans"].includes(
-            // @ts-expect-error
-            character
-        )
-    ) {
+    // @ts-expect-error
+    if (textboxChars.includes(character)) {
         let userSettings = loadUserSettings(userId);
 
         if (userSettings) userSettings.character = character as TextboxChar;

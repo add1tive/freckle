@@ -1,17 +1,19 @@
 {
-    "name": "freckle-app",
+    "name": "@freckle-a1e/app",
+    "description": "Freckle's core, the app itself",
     "version": "0.0.1",
-    "description": "",
-    "main": "index.js",
+    "author": "add1tive",
+    "license": "(MIT OR GPL-3.0)",
+    "private": true,
+    "main": "index.ts",
     "type": "module",
     "scripts": {
-        "app": "tsx --env-file=.env index.js",
+        "app": "tsx --env-file=.env index.ts",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
-    "author": "",
-    "license": "ISC",
     "dependencies": {
+        "@freckle-a1e/shared": "workspace:*",
         "@logtape/file": "^1.0.0",
         "@logtape/logtape": "^1.0.0",
         "@logtape/pretty": "^1.0.0",

@@ -30,8 +30,8 @@ const logger = getLogger(["freckle-app"]).getChild("textboxRender");
 
 // Freckle
 import { getRandomIntInclusive } from "./smallUtils";
-import * as f from "$shared/types/freckle.t"; // f for Freckle
-import spriteInfo_ from "$shared/assets/images/utdr_talk/spriteInfo.json";
+import * as f from "@freckle-a1e/shared/types/freckle.t"; // f for Freckle
+import spriteInfo_ from "@freckle-a1e/shared/assets/images/utdr_talk/spriteInfo.json";
 import { loadUserSettings } from "./userFiles";
 const spriteInfo = spriteInfo_ as unknown as f.SpriteInfo;
 

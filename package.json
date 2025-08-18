@@ -1,0 +1,14 @@
+{
+  "name": "freckle-a1e",
+  "description": "Freckle monorepo",
+  "version": "0.0.1",
+  "author": "add1tive",
+  "license": "(MIT OR GPL-3.0)",
+  "private": true,
+  "type": "module",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

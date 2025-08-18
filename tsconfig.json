@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": "."
+  },
+  "references": [
+    { "path": "./app" },
+    { "path": "./web" }
+  ],
+  "files": []
+}
