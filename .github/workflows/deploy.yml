@@ -7,9 +7,6 @@ on:
 jobs:
   build_site:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./web
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,7 +20,6 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          cache-dependency-path: web/pnpm-lock.yaml
           node-version: 24
           cache: pnpm
 
@@ -34,7 +30,7 @@ jobs:
         env:
           BASE_PATH: '/${{ github.event.repository.name }}'
         run: |
-          pnpm run build
+          pnpm --filter web run build
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
