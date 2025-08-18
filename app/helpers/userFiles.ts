@@ -31,7 +31,10 @@ const logger = logger_.getChild("userFiles");
 const ALGORITHM = "aes-256-cbc";
 const IV_LENGTH = 16; // in bytes
 const HASH_LENGTH = 12 * 2;
-const FILE_HEADER = "FRECKLE";
+
+// FRKL in ASCII followed by three reserved bytes (all zeros)
+const FILE_HEADER = Buffer.concat([Buffer.from("FRKL", "ascii"), Buffer.from([0x00, 0x00, 0x00])]);
+const FILE_EXT = "frkl";
 
 function getKey(userId: string) {
     return crypto.createHash("sha256").update(userId + localSettings.secret).digest();
@@ -46,7 +49,7 @@ function encrypt(data: crypto.BinaryLike, userId: string) {
     const cipher = crypto.createCipheriv(ALGORITHM, getKey(userId), iv);
 
     return Buffer.concat([
-        Buffer.from(FILE_HEADER, "ascii"),
+        FILE_HEADER,
         iv,
         cipher.update(data),
         cipher.final()
@@ -66,11 +69,11 @@ function decrypt(data: Buffer, userId: string) {
 // sync, not async
 export function saveUserSettings(userId: string, userSettings: UserSettingsC) {
     const hash = getHash(userId);
-    const path = `./local/user_files/${hash}/`;
+    const path = `./local/user_files/${hash}`;
 
     try {
         fs.mkdirSync(path, { recursive: true });
-        fs.writeFileSync(path + "settings.bin", encrypt(JSON.stringify(userSettings), userId));
+        fs.writeFileSync(`${path}/settings.${FILE_EXT}`, encrypt(JSON.stringify(userSettings), userId));
         logger.info`Successfully saved settings for ${hash}`;
 
         return true;
@@ -82,11 +85,11 @@ export function saveUserSettings(userId: string, userSettings: UserSettingsC) {
 }
 export function loadUserSettings(userId: string): UserSettingsC | null {
     const hash = getHash(userId);
-    const fpath = `./local/user_files/${hash}/settings.bin`;
+    const fpath = `./local/user_files/${hash}/settings.${FILE_EXT}`;
 
     try {
         if (fs.existsSync(fpath)) {
-            const file = fs.readFileSync(`./local/user_files/${hash}/settings.bin`);
+            const file = fs.readFileSync(`./local/user_files/${hash}/settings.${FILE_EXT}`);
             const decrypted = decrypt(file, userId).toString();
             logger.info`Successfully loaded settings for ${hash}`;
 
