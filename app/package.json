@@ -1,25 +1,25 @@
 {
-  "name": "freckle-app",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@logtape/file": "^1.0.0",
-    "@logtape/logtape": "^1.0.0",
-    "@logtape/pretty": "^1.0.0",
-    "@napi-rs/canvas": "^0.1.72",
-    "discord.js": "^14.21.0",
-    "string-crypto": "^3.0.2"
-  },
-  "devDependencies": {
-    "@types/node": "^24.0.10",
-    "tsx": "^4.20.3",
-    "typescript": "^5.8.3"
-  }
+    "name": "freckle-app",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@logtape/file": "^1.0.0",
+        "@logtape/logtape": "^1.0.0",
+        "@logtape/pretty": "^1.0.0",
+        "@napi-rs/canvas": "^0.1.72",
+        "discord.js": "^14.21.0",
+        "string-crypto": "^3.0.2"
+    },
+    "devDependencies": {
+        "@types/node": "^24.0.10",
+        "tsx": "^4.20.3",
+        "typescript": "^5.8.3"
+    }
 }

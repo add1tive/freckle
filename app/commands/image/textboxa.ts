@@ -36,7 +36,7 @@ import { makeImageNew } from "helpers/textboxRenderer";
 import { TextboxChar } from "$shared/types/freckle.t";
 
 module.exports = {
-	data: {
+    data: {
         options: [
             {
                 type: 3,
@@ -62,16 +62,16 @@ module.exports = {
         integration_types: [1],
         contexts: [0, 1, 2]
     },
-	async execute(interaction: ChatInputCommandInteraction) {
+    async execute(interaction: ChatInputCommandInteraction) {
         let instanceName = randomBytes(12).toString("hex");
-        logger.info `received request, assigning name ${instanceName}`;
+        logger.info`received request, assigning name ${instanceName}`;
 
         let cachePath = "./local/cache/" + instanceName + "/";
 
         cachePath = "./local/cache/" + instanceName + "/";
-        logger.debug `cache path: ${cachePath}`;
+        logger.debug`cache path: ${cachePath}`;
 
-        fs.mkdirSync(cachePath, {recursive: true});
+        fs.mkdirSync(cachePath, { recursive: true });
 
         const text = interaction.options.getString("text");
         const charexp = interaction.options.getInteger("charexp");
@@ -84,20 +84,29 @@ module.exports = {
         await interaction.deferReply();
         await makeImageNew(text, charexp, size, character, userId, cachePath);
 
-        const ffmpeg = spawn("ffmpeg", [
-            "-f", "image2",
-            "-framerate", "30",
-            "-i", "%003d.png",
-            "-lossless", "1",
-            "-loop", "0",
-            "out.webp"
-        ], { cwd: cachePath });
+        const ffmpeg = spawn(
+            "ffmpeg",
+            [
+                "-f",
+                "image2",
+                "-framerate",
+                "30",
+                "-i",
+                "%003d.png",
+                "-lossless",
+                "1",
+                "-loop",
+                "0",
+                "out.webp"
+            ],
+            { cwd: cachePath }
+        );
 
         ffmpeg.on("close", (code) => {
             // console.log(`ffmpeg process exited with code ${code}`);
             interaction.editReply({ files: [`${cachePath}out.webp`] });
         });
 
-        logger.info `done with instance ${instanceName}`;
-	},
+        logger.info`done with instance ${instanceName}`;
+    }
 };

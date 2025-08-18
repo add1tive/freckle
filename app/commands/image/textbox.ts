@@ -35,7 +35,7 @@ import { TextboxChar } from "$shared/types/freckle.t";
 import { makeImageNew } from "helpers/textboxRenderer";
 
 module.exports = {
-	data: {
+    data: {
         options: [
             {
                 type: 3,
@@ -58,13 +58,13 @@ module.exports = {
         ],
         name: "textbox",
         description: "Generate a UTDR textbox",
-        "integration_types": [1],
-        "contexts": [0, 1, 2]
+        integration_types: [1],
+        contexts: [0, 1, 2]
     },
-	async execute(interaction: ChatInputCommandInteraction) {
+    async execute(interaction: ChatInputCommandInteraction) {
         let instanceName = randomBytes(12).toString("hex");
         // fs.mkdirSync("cache/" + instanceName, {recursive: true});
-        logger.info `received request, assigning name ${instanceName}`;
+        logger.info`received request, assigning name ${instanceName}`;
 
         const text = interaction.options.getString("text");
         const charexp = interaction.options.getInteger("charexp");
@@ -73,8 +73,11 @@ module.exports = {
         const userId = interaction.user.id;
 
         if (character !== null) character = character.toLowerCase() as TextboxChar;
-        const attachment = new AttachmentBuilder(await makeImageNew(text, charexp, size, character, userId), { name: "image.png" });
+        const attachment = new AttachmentBuilder(
+            await makeImageNew(text, charexp, size, character, userId),
+            { name: "image.png" }
+        );
 
-		await interaction.reply({ files: [attachment] });
-	},
+        await interaction.reply({ files: [attachment] });
+    }
 };

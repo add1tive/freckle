@@ -37,7 +37,10 @@ const FILE_HEADER = Buffer.concat([Buffer.from("FRKL", "ascii"), Buffer.from([0x
 const FILE_EXT = "frkl";
 
 function getKey(userId: string) {
-    return crypto.createHash("sha256").update(userId + localSettings.secret).digest();
+    return crypto
+        .createHash("sha256")
+        .update(userId + localSettings.secret)
+        .digest();
 }
 
 function getHash(userId: string) {
@@ -48,12 +51,7 @@ function encrypt(data: crypto.BinaryLike, userId: string) {
     const iv = crypto.randomBytes(IV_LENGTH);
     const cipher = crypto.createCipheriv(ALGORITHM, getKey(userId), iv);
 
-    return Buffer.concat([
-        FILE_HEADER,
-        iv,
-        cipher.update(data),
-        cipher.final()
-    ]);
+    return Buffer.concat([FILE_HEADER, iv, cipher.update(data), cipher.final()]);
 }
 
 function decrypt(data: Buffer, userId: string) {
@@ -73,7 +71,10 @@ export function saveUserSettings(userId: string, userSettings: UserSettingsC) {
 
     try {
         fs.mkdirSync(path, { recursive: true });
-        fs.writeFileSync(`${path}/settings.${FILE_EXT}`, encrypt(JSON.stringify(userSettings), userId));
+        fs.writeFileSync(
+            `${path}/settings.${FILE_EXT}`,
+            encrypt(JSON.stringify(userSettings), userId)
+        );
         logger.info`Successfully saved settings for ${hash}`;
 
         return true;

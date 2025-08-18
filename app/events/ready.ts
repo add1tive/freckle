@@ -25,10 +25,9 @@ const logger_ = getLogger(["freckle-app"]);
 const logger = logger_.getChild("ready");
 
 module.exports = {
-	name: Events.ClientReady,
-	once: true,
-	execute(client: Client) {
-        if (client.user !== null)
-		    logger.info `Ready! Logged in as ${client.user.tag}`;
-	},
+    name: Events.ClientReady,
+    once: true,
+    execute(client: Client) {
+        if (client.user !== null) logger.info`Ready! Logged in as ${client.user.tag}`;
+    }
 };
