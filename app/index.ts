@@ -52,8 +52,7 @@ configure({
     },
     loggers: [{ category: [], lowestLevel: "debug", sinks: ["console", "file"] }]
 });
-const logger_ = getLogger(["freckle-app"]);
-const logger = logger_.getChild("index");
+const logger = getLogger(["freckle-app"]).getChild("index");
 // -------------
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });

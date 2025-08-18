@@ -51,8 +51,7 @@ configure({
     },
     loggers: [{ category: [], lowestLevel: "debug", sinks: ["console", "file"] }]
 });
-const logger_ = getLogger(["freckle-app"]);
-const logger = logger_.getChild("deploy-commands");
+const logger = getLogger(["freckle-app"]).getChild("deploy-commands");
 // -------------
 
 const commands = [];

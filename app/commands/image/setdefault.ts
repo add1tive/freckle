@@ -23,8 +23,7 @@ import { TextboxChar, textboxChars } from "$shared/types/freckle.t";
 import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
 import { loadUserSettings, saveUserSettings } from "helpers/userFiles";
 
-const logger_ = getLogger(["freckle-app"]);
-const logger = logger_.getChild("changechar");
+const logger = getLogger(["freckle-app"]).getChild("changechar");
 
 module.exports = {
     data: {
