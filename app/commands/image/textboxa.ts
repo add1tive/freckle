@@ -34,78 +34,77 @@ const logger = getLogger(["freckle-app"]).getChild("textboxa");
 import { makeImageNew } from "helpers/textboxRenderer";
 import { TextboxChar } from "$shared/types/freckle.t";
 
-module.exports = {
-    data: {
-        options: [
-            {
-                type: 3,
-                name: "text",
-                description: "The text the character will say",
-                required: true
-            },
-            {
-                type: 4,
-                name: "charexp",
-                description: "The chosen character's expression, default is 1",
-                required: false
-            },
-            {
-                type: 3,
-                name: "character",
-                description: "The character to be displayed (set your default with /setdefault)",
-                required: false
-            }
+export const data = {
+    options: [
+        {
+            type: 3,
+            name: "text",
+            description: "The text the character will say",
+            required: true
+        },
+        {
+            type: 4,
+            name: "charexp",
+            description: "The chosen character's expression, default is 1",
+            required: false
+        },
+        {
+            type: 3,
+            name: "character",
+            description: "The character to be displayed (set your default with /setdefault)",
+            required: false
+        }
+    ],
+    name: "textboxa",
+    description: "Generate an animated UTDR textbox",
+    integration_types: [1],
+    contexts: [0, 1, 2]
+}
+
+export async function execute(interaction: ChatInputCommandInteraction) {
+    let instanceName = randomBytes(12).toString("hex");
+    logger.info`received request, assigning name ${instanceName}`;
+
+    let cachePath = "./.local/cache/" + instanceName + "/";
+
+    cachePath = "./.local/cache/" + instanceName + "/";
+    logger.debug`cache path: ${cachePath}`;
+
+    fs.mkdirSync(cachePath, { recursive: true });
+
+    const text = interaction.options.getString("text");
+    const charexp = interaction.options.getInteger("charexp");
+    let character = interaction.options.getString("character") as TextboxChar | null;
+    const size = 2; // used to be customisable, disabled probably forever
+    const userId = interaction.user.id;
+
+    if (character !== null) character = character.toLowerCase() as TextboxChar;
+
+    await interaction.deferReply();
+    await makeImageNew(text, charexp, size, character, userId, cachePath);
+
+    const ffmpeg = spawn(
+        "ffmpeg",
+        [
+            "-f",
+            "image2",
+            "-framerate",
+            "30",
+            "-i",
+            "%003d.png",
+            "-lossless",
+            "1",
+            "-loop",
+            "0",
+            "out.webp"
         ],
-        name: "textboxa",
-        description: "Generate an animated UTDR textbox",
-        integration_types: [1],
-        contexts: [0, 1, 2]
-    },
-    async execute(interaction: ChatInputCommandInteraction) {
-        let instanceName = randomBytes(12).toString("hex");
-        logger.info`received request, assigning name ${instanceName}`;
+        { cwd: cachePath }
+    );
 
-        let cachePath = "./.local/cache/" + instanceName + "/";
+    ffmpeg.on("close", (code) => {
+        // console.log(`ffmpeg process exited with code ${code}`);
+        interaction.editReply({ files: [`${cachePath}out.webp`] });
+    });
 
-        cachePath = "./.local/cache/" + instanceName + "/";
-        logger.debug`cache path: ${cachePath}`;
-
-        fs.mkdirSync(cachePath, { recursive: true });
-
-        const text = interaction.options.getString("text");
-        const charexp = interaction.options.getInteger("charexp");
-        let character = interaction.options.getString("character") as TextboxChar | null;
-        const size = 2; // used to be customisable, disabled probably forever
-        const userId = interaction.user.id;
-
-        if (character !== null) character = character.toLowerCase() as TextboxChar;
-
-        await interaction.deferReply();
-        await makeImageNew(text, charexp, size, character, userId, cachePath);
-
-        const ffmpeg = spawn(
-            "ffmpeg",
-            [
-                "-f",
-                "image2",
-                "-framerate",
-                "30",
-                "-i",
-                "%003d.png",
-                "-lossless",
-                "1",
-                "-loop",
-                "0",
-                "out.webp"
-            ],
-            { cwd: cachePath }
-        );
-
-        ffmpeg.on("close", (code) => {
-            // console.log(`ffmpeg process exited with code ${code}`);
-            interaction.editReply({ files: [`${cachePath}out.webp`] });
-        });
-
-        logger.info`done with instance ${instanceName}`;
-    }
-};
+    logger.info`done with instance ${instanceName}`;
+}

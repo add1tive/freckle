@@ -23,10 +23,10 @@ import { getLogger } from "@logtape/logtape";
 
 const logger = getLogger(["freckle-app"]).getChild("ready");
 
-module.exports = {
-    name: Events.ClientReady,
-    once: true,
-    execute(client: Client) {
-        if (client.user !== null) logger.info`Ready! Logged in as ${client.user.tag}`;
-    }
-};
+export const name = Events.ClientReady;
+
+export const once = true;
+
+export function execute(client: Client) {
+    if (client.user !== null) logger.info`Ready! Logged in as ${client.user.tag}`;
+}

@@ -29,30 +29,29 @@ exec("git log --pretty=format:'%h' -n 1", function (error, stdout, stderr) {
     gitCommit = stdout.replaceAll("'", "");
 });
 
-module.exports = {
-    data: {
-        name: "help",
-        description: "Sends you tips, useful links and all that",
-        integration_types: [1],
-        contexts: [0, 1, 2]
-    },
-    async execute(interaction: ChatInputCommandInteraction) {
-        const embed = new EmbedBuilder()
-            .setAuthor({
-                name: "Freckle",
-                url: "https://add1tive.github.io/freckle/"
-            })
-            .setTitle("Help and info")
-            .setDescription(
-                `Running Freckle version \`${gitCommit}\`.\nVisit the website [here](https://add1tive.github.io/freckle/).`
-            )
-            .setColor("#00b0f4")
-            .setFooter({
-                text: "Freckle",
-                iconURL: "https://us-east-1.tixte.net/uploads/add1tive.tixte.co/favicon.png"
-            })
-            .setTimestamp();
-
-        await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
-    }
+export const data = {
+    name: "help",
+    description: "Sends you tips, useful links and all that",
+    integration_types: [1],
+    contexts: [0, 1, 2]
 };
+
+export async function execute(interaction: ChatInputCommandInteraction) {
+    const embed = new EmbedBuilder()
+        .setAuthor({
+            name: "Freckle",
+            url: "https://add1tive.github.io/freckle/"
+        })
+        .setTitle("Help and info")
+        .setDescription(
+            `Running Freckle version \`${gitCommit}\`.\nVisit the website [here](https://add1tive.github.io/freckle/).`
+        )
+        .setColor("#00b0f4")
+        .setFooter({
+            text: "Freckle",
+            iconURL: "https://us-east-1.tixte.net/uploads/add1tive.tixte.co/favicon.png"
+        })
+        .setTimestamp();
+
+    await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+}

@@ -33,50 +33,50 @@ const logger = getLogger(["freckle-app"]).getChild("textbox");
 import { TextboxChar } from "$shared/types/freckle.t";
 import { makeImageNew } from "helpers/textboxRenderer";
 
-module.exports = {
-    data: {
-        options: [
-            {
-                type: 3,
-                name: "text",
-                description: "The text the character will say",
-                required: true
-            },
-            {
-                type: 4,
-                name: "charexp",
-                description: "The chosen character's expression, default is 1",
-                required: false
-            },
-            {
-                type: 3,
-                name: "character",
-                description: "The character to be displayed (set your default with /setdefault)",
-                required: false
-            }
-        ],
-        name: "textbox",
-        description: "Generate a UTDR textbox",
-        integration_types: [1],
-        contexts: [0, 1, 2]
-    },
-    async execute(interaction: ChatInputCommandInteraction) {
-        let instanceName = randomBytes(12).toString("hex");
-        // fs.mkdirSync("cache/" + instanceName, {recursive: true});
-        logger.info`received request, assigning name ${instanceName}`;
+export const data = {
+    options: [
+        {
+            type: 3,
+            name: "text",
+            description: "The text the character will say",
+            required: true
+        },
+        {
+            type: 4,
+            name: "charexp",
+            description: "The chosen character's expression, default is 1",
+            required: false
+        },
+        {
+            type: 3,
+            name: "character",
+            description: "The character to be displayed (set your default with /setdefault)",
+            required: false
+        }
+    ],
+    name: "textbox",
+    description: "Generate a UTDR textbox",
+    integration_types: [1],
+    contexts: [0, 1, 2]
+}
 
-        const text = interaction.options.getString("text");
-        const charexp = interaction.options.getInteger("charexp");
-        let character = interaction.options.getString("character") as TextboxChar | null;
-        const size = 2; // used to be customisable, disabled probably forever
-        const userId = interaction.user.id;
+export async function execute(interaction: ChatInputCommandInteraction) {
+    let instanceName = randomBytes(12).toString("hex");
+    // fs.mkdirSync("cache/" + instanceName, {recursive: true});
+    logger.info`received request, assigning name ${instanceName}`;
 
-        if (character !== null) character = character.toLowerCase() as TextboxChar;
-        const attachment = new AttachmentBuilder(
-            await makeImageNew(text, charexp, size, character, userId),
-            { name: "image.png" }
-        );
+    const text = interaction.options.getString("text");
+    const charexp = interaction.options.getInteger("charexp");
+    let character = interaction.options.getString("character") as TextboxChar | null;
+    const size = 2; // used to be customisable, disabled probably forever
+    const userId = interaction.user.id;
 
-        await interaction.reply({ files: [attachment] });
-    }
-};
+    if (character !== null) character = character.toLowerCase() as TextboxChar;
+    const attachment = new AttachmentBuilder(
+        await makeImageNew(text, charexp, size, character, userId),
+        { name: "image.png" }
+    );
+
+    await interaction.reply({ files: [attachment] });
+}
+

@@ -26,6 +26,7 @@ import { Client, Collection, GatewayIntentBits } from "discord.js";
 import { configure, getConsoleSink, getLogger } from "@logtape/logtape";
 import { getPrettyFormatter } from "@logtape/pretty";
 import { getStreamFileSink } from "@logtape/file";
+import { pathToFileURL } from "node:url";
 
 fs.mkdirSync(".local/logs", { recursive: true });
 
@@ -44,7 +45,7 @@ const prettyCustColor = getPrettyFormatter({
 });
 
 // logger
-configure({
+await configure({
     sinks: {
         console: getConsoleSink({ formatter: prettyCustColor }),
         file: getStreamFileSink(`.local/logs/${dateRn}.log`, { formatter: prettyNoColor })
@@ -53,6 +54,8 @@ configure({
 });
 const logger = getLogger(["freckle-app"]).getChild("index");
 // -------------
+
+const __dirname = import.meta.dirname;
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -65,7 +68,7 @@ for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith(".ts"));
     for (const file of commandFiles) {
         const filePath = path.join(commandsPath, file);
-        const command = require(filePath);
+        const command = await import(pathToFileURL(filePath).href);
         if ("data" in command && "execute" in command) {
             client.commands.set(command.data.name, command);
         } else {
@@ -79,7 +82,7 @@ const eventFiles = fs.readdirSync(eventsPath).filter((file) => file.endsWith(".t
 
 for (const file of eventFiles) {
     const filePath = path.join(eventsPath, file);
-    const event = require(filePath);
+    const event = await import(pathToFileURL(filePath).href);
     if (event.once) {
         client.once(event.name, (...args) => event.execute(...args));
     } else {
@@ -88,8 +91,9 @@ for (const file of eventFiles) {
 }
 
 if (!process.env.TOKEN) {
-    console.error('Could not find environment variable "TOKEN"! Exiting.');
+    logger.fatal`Could not find environment variable "TOKEN"! Exiting.`;
     process.exit();
 }
 
-client.login(process.env.TOKEN);
+// is await necessary?
+await client.login(process.env.TOKEN);

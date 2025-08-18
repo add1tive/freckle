@@ -19,62 +19,65 @@
  */
 
 import { getLogger } from "@logtape/logtape";
-import { TextboxChar, textboxChars } from "$shared/types/freckle.t";
+import { TextboxChar } from "$shared/types/freckle.t";
 import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
 import { loadUserSettings, saveUserSettings } from "helpers/userFiles";
 
 const logger = getLogger(["freckle-app"]).getChild("changechar");
 
-module.exports = {
-    data: {
-        options: [
-            {
-                type: 3,
-                name: "character",
-                description: "The character",
-                required: true
-            }
-        ],
-        name: "setdefault",
-        description: "Sets user's default character",
-        integration_types: [1],
-        contexts: [0, 1, 2]
-    },
-    async execute(interaction: ChatInputCommandInteraction) {
-        const userId = interaction.user.id;
-        const character = interaction.options.getString("character");
-
-        const embed = new EmbedBuilder()
-            .setAuthor({
-                name: "Freckle",
-                url: "https://add1tive.github.io/freckle/"
-            })
-            .setTitle("Set default textbox character")
-            .setFooter({
-                text: "Freckle",
-                iconURL: "https://us-east-1.tixte.net/uploads/add1tive.tixte.co/favicon.png"
-            })
-            .setTimestamp();
-
-        // @ts-expect-error
-        if (textboxChars.includes(character)) {
-            let userSettings = loadUserSettings(userId);
-
-            if (userSettings) userSettings.character = character as TextboxChar;
-            else userSettings = { character: character as TextboxChar };
-
-            saveUserSettings(userId, userSettings);
-
-            // prettier-ignore
-            embed
-                .setColor("#00b0f4")
-                .setDescription(`Changed to \`${character}\`.`);
-        } else {
-            embed
-                .setColor("#ff5555")
-                .setDescription(`Failed to change character: \`${character}\` doesn't exist.`);
+export const data = {
+    options: [
+        {
+            type: 3,
+            name: "character",
+            description: "The character",
+            required: true
         }
-
-        await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
-    }
+    ],
+    name: "setdefault",
+    description: "Sets user's default character",
+    integration_types: [1],
+    contexts: [0, 1, 2]
 };
+
+export async function execute(interaction: ChatInputCommandInteraction) {
+    const userId = interaction.user.id;
+    const character = interaction.options.getString("character");
+
+    const embed = new EmbedBuilder()
+        .setAuthor({
+            name: "Freckle",
+            url: "https://add1tive.github.io/freckle/"
+        })
+        .setTitle("Set default textbox character")
+        .setFooter({
+            text: "Freckle",
+            iconURL: "https://us-east-1.tixte.net/uploads/add1tive.tixte.co/favicon.png"
+        })
+        .setTimestamp();
+
+    if (
+        ["noelle", "susie", "ralsei", "papyrus", "berdly", "carol", "asgore", "sans"].includes(
+            // @ts-expect-error
+            character
+        )
+    ) {
+        let userSettings = loadUserSettings(userId);
+
+        if (userSettings) userSettings.character = character as TextboxChar;
+        else userSettings = { character: character as TextboxChar };
+
+        saveUserSettings(userId, userSettings);
+
+        // prettier-ignore
+        embed
+            .setColor("#00b0f4")
+            .setDescription(`Changed to \`${character}\`.`);
+    } else {
+        embed
+            .setColor("#ff5555")
+            .setDescription(`Failed to change character: \`${character}\` doesn't exist.`);
+    }
+
+    await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+}

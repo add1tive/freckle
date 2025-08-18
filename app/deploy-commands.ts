@@ -26,6 +26,7 @@ import path from "node:path";
 import { configure, getConsoleSink, getLogger } from "@logtape/logtape";
 import { getPrettyFormatter } from "@logtape/pretty";
 import { getStreamFileSink } from "@logtape/file";
+import { pathToFileURL } from "node:url";
 
 fs.mkdirSync(".local/logs", { recursive: true });
 
@@ -43,7 +44,7 @@ const prettyCustColor = getPrettyFormatter({
     categorySeparator: " > "
 });
 
-configure({
+await configure({
     sinks: {
         console: getConsoleSink({ formatter: prettyCustColor }),
         file: getStreamFileSink(`.local/logs/${dateRn}.log`, { formatter: prettyNoColor })
@@ -53,8 +54,10 @@ configure({
 const logger = getLogger(["freckle-app"]).getChild("deploy-commands");
 // -------------
 
+const __dirname = import.meta.dirname;
+
 if (!process.env.TOKEN) {
-    console.error('Could not find environment variable "TOKEN"! Exiting.');
+    logger.fatal`Could not find environment variable "TOKEN"! Exiting.`;
     process.exit();
 }
 
@@ -67,7 +70,7 @@ for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith(".ts"));
     for (const file of commandFiles) {
         const filePath = path.join(commandsPath, file);
-        const command = require(filePath);
+        const command = await import(pathToFileURL(filePath).href);
         if ("data" in command && "execute" in command) {
             commands.push(command.data);
         } else {
@@ -83,7 +86,7 @@ const rest = new REST().setToken(process.env.TOKEN);
         logger.info`Started refreshing ${commands.length} application (/) commands.`;
 
         if (!process.env.CLIENT_ID) {
-            console.error('Could not find environment variable "CLIENT_ID"! Exiting.');
+            logger.fatal`Could not find environment variable "CLIENT_ID"! Exiting.`;
             process.exit();
         }
 
