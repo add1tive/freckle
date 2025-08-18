@@ -18,7 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import localSettings from "../local/private.json";
 import crypto from "crypto";
 import fs from "node:fs";
 import { UserSettingsC } from "$shared/types/freckle.t";
@@ -38,7 +37,7 @@ const FILE_EXT = "frkl";
 function getKey(userId: string) {
     return crypto
         .createHash("sha256")
-        .update(userId + localSettings.secret)
+        .update(userId + (process.env.SECRET as string))
         .digest();
 }
 
@@ -66,7 +65,12 @@ function decrypt(data: Buffer, userId: string) {
 // sync, not async
 export function saveUserSettings(userId: string, userSettings: UserSettingsC) {
     const hash = getHash(userId);
-    const path = `./local/user_files/${hash}`;
+    const path = `./.local/user_files/${hash}`;
+
+    if (!process.env.SECRET) {
+        logger.error`Failed to save user settings: could not find environment variable "SECRET"!`;
+        return false;
+    }
 
     try {
         fs.mkdirSync(path, { recursive: true });
@@ -85,11 +89,16 @@ export function saveUserSettings(userId: string, userSettings: UserSettingsC) {
 }
 export function loadUserSettings(userId: string): UserSettingsC | null {
     const hash = getHash(userId);
-    const fpath = `./local/user_files/${hash}/settings.${FILE_EXT}`;
+    const fpath = `./.local/user_files/${hash}/settings.${FILE_EXT}`;
+
+    if (!process.env.SECRET) {
+        logger.error`Failed to load user settings: could not find environment variable "SECRET"!`;
+        return null;
+    }
 
     try {
         if (fs.existsSync(fpath)) {
-            const file = fs.readFileSync(`./local/user_files/${hash}/settings.${FILE_EXT}`);
+            const file = fs.readFileSync(`./.local/user_files/${hash}/settings.${FILE_EXT}`);
             const decrypted = decrypt(file, userId).toString();
             logger.info`Successfully loaded settings for ${hash}`;
 

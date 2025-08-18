@@ -19,7 +19,6 @@
  */
 
 import { ApplicationCommand, REST, Routes } from "discord.js";
-import { clientId, token } from "./local/private.json";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -28,7 +27,7 @@ import { configure, getConsoleSink, getLogger } from "@logtape/logtape";
 import { getPrettyFormatter } from "@logtape/pretty";
 import { getStreamFileSink } from "@logtape/file";
 
-fs.mkdirSync("local/logs", { recursive: true });
+fs.mkdirSync(".local/logs", { recursive: true });
 
 const dateRn = new Date().toISOString().replace(/T/, "_").replace(/\..+/, "").replaceAll(":", "-");
 
@@ -47,12 +46,17 @@ const prettyCustColor = getPrettyFormatter({
 configure({
     sinks: {
         console: getConsoleSink({ formatter: prettyCustColor }),
-        file: getStreamFileSink(`local/logs/${dateRn}.log`, { formatter: prettyNoColor })
+        file: getStreamFileSink(`.local/logs/${dateRn}.log`, { formatter: prettyNoColor })
     },
     loggers: [{ category: [], lowestLevel: "debug", sinks: ["console", "file"] }]
 });
 const logger = getLogger(["freckle-app"]).getChild("deploy-commands");
 // -------------
+
+if (!process.env.TOKEN) {
+    console.error('Could not find environment variable "TOKEN"! Exiting.');
+    process.exit();
+}
 
 const commands = [];
 const foldersPath = path.join(__dirname, "commands");
@@ -72,11 +76,16 @@ for (const folder of commandFolders) {
     }
 }
 
-const rest = new REST().setToken(token);
+const rest = new REST().setToken(process.env.TOKEN);
 
 (async () => {
     try {
         logger.info`Started refreshing ${commands.length} application (/) commands.`;
+
+        if (!process.env.CLIENT_ID) {
+            console.error('Could not find environment variable "CLIENT_ID"! Exiting.');
+            process.exit();
+        }
 
         // guild commands (not yet used, hence the commenting)
         // const data = await rest.put(
@@ -85,7 +94,7 @@ const rest = new REST().setToken(token);
         // );
 
         // app commands
-        const data = (await rest.put(Routes.applicationCommands(clientId), {
+        const data = (await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
             body: commands
         })) as ApplicationCommand[]; // ! NO IDEA IF THIS IS THE CORRECT TYPE
 

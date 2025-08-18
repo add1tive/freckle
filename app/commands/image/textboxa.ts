@@ -65,9 +65,9 @@ module.exports = {
         let instanceName = randomBytes(12).toString("hex");
         logger.info`received request, assigning name ${instanceName}`;
 
-        let cachePath = "./local/cache/" + instanceName + "/";
+        let cachePath = "./.local/cache/" + instanceName + "/";
 
-        cachePath = "./local/cache/" + instanceName + "/";
+        cachePath = "./.local/cache/" + instanceName + "/";
         logger.debug`cache path: ${cachePath}`;
 
         fs.mkdirSync(cachePath, { recursive: true });

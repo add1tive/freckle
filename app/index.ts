@@ -21,14 +21,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Client, Collection, GatewayIntentBits } from "discord.js";
-import { token } from "./local/private.json";
 
 // -- LOGGING --
 import { configure, getConsoleSink, getLogger } from "@logtape/logtape";
 import { getPrettyFormatter } from "@logtape/pretty";
 import { getStreamFileSink } from "@logtape/file";
 
-fs.mkdirSync("local/logs", { recursive: true });
+fs.mkdirSync(".local/logs", { recursive: true });
 
 const dateRn = new Date().toISOString().replace(/T/, "_").replace(/\..+/, "").replaceAll(":", "-");
 
@@ -48,7 +47,7 @@ const prettyCustColor = getPrettyFormatter({
 configure({
     sinks: {
         console: getConsoleSink({ formatter: prettyCustColor }),
-        file: getStreamFileSink(`local/logs/${dateRn}.log`, { formatter: prettyNoColor })
+        file: getStreamFileSink(`.local/logs/${dateRn}.log`, { formatter: prettyNoColor })
     },
     loggers: [{ category: [], lowestLevel: "debug", sinks: ["console", "file"] }]
 });
@@ -88,4 +87,9 @@ for (const file of eventFiles) {
     }
 }
 
-client.login(token);
+if (!process.env.TOKEN) {
+    console.error('Could not find environment variable "TOKEN"! Exiting.');
+    process.exit();
+}
+
+client.login(process.env.TOKEN);
