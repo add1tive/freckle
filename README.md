@@ -7,15 +7,24 @@ A Discord app and its website.
 This is in case you want to run your own instance of Freckle.
 If you came here looking for how to use it as a user, check [Freckle's website](https://add1tive.github.io/freckle/).
 
-1. Install [NodeJS](https://nodejs.org/)2
+1. Install [NodeJS](https://nodejs.org/).
 2. Install [pnpm](https://pnpm.io/).
-3. Run `pnpm app:start`.
+3. Rename the "[.env_template](./app/.env_template)" file inside the app/ folder to ".env" and populate it with your credentials.
+    1. `TOKEN` is your Discord app's bot token
+    2. `CLIENT_ID` is your Discord app's ID
+    3. `SECRET` can be any string
+        * it acts as a password for encrypted user files (such as their settings)
+        * if you ever lose it, you'll lose that data too
+4. Run `pnpm install` or `pnpm i`.
+5. Run `pnpm app:start` (or `pnpm start` if you're inside the app/ folder).
 
 ### Using [tmux](https://github.com/tmux/tmux/wiki)
 
 Tip: if you're trying to run this on a Unix-like server, I recommend using tmux:
 
-`tmux new -d -sfreckle "pnpm tsx index.ts"`
+`tmux new -d -sfreckle "pnpm app:start"`
+
+(or `tmux new -d -sfreckle "pnpm start"` if you're inside the app/ folder)
 
 This creates a little shell session running in the background that **doesn't close when you close your SSH session**.
 If you want to stop it, run:
