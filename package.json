@@ -12,8 +12,12 @@
     ]
   },
   "scripts": {
-      "app:start": "pnpm --filter app run start",
-      "web:dev": "pnpm --filter web run dev --host",
-      "web:build": "pnpm --filter web run build"
+    "app:start": "pnpm --filter app run start",
+    "web:dev": "pnpm --filter web run dev --host",
+    "web:build": "pnpm --filter web run build"
+  },
+  "dependencies": {
+    "prettier": "^3.6.2",
+    "prettier-plugin-svelte": "^3.4.0"
   }
 }
