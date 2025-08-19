@@ -14,17 +14,17 @@
     "keywords": [],
     "dependencies": {
         "@freckle-a1e/shared": "workspace:*",
-        "@logtape/file": "^1.0.0",
-        "@logtape/logtape": "^1.0.0",
-        "@logtape/pretty": "^1.0.0",
-        "@napi-rs/canvas": "^0.1.72",
+        "@logtape/file": "^1.0.4",
+        "@logtape/logtape": "^1.0.4",
+        "@logtape/pretty": "^1.0.4",
+        "@napi-rs/canvas": "^0.1.77",
         "ansis": "^4.1.0",
         "discord.js": "^14.21.0",
         "string-crypto": "^3.0.2"
     },
     "devDependencies": {
-        "@types/node": "^24.0.10",
-        "tsx": "^4.20.3",
-        "typescript": "^5.8.3"
+        "@types/node": "^24.3.0",
+        "tsx": "^4.20.4",
+        "typescript": "^5.9.2"
     }
 }
