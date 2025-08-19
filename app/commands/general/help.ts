@@ -19,7 +19,8 @@
  */
 
 import { getLogger } from "@logtape/logtape";
-import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
+import { ChatInputCommandInteraction, MessageFlags } from "discord.js";
+import { makeGenericEmbed } from "helpers/genericEmbed";
 import { exec } from "node:child_process";
 
 const logger = getLogger(["app"]).getChild("help");
@@ -29,6 +30,8 @@ exec("git log --pretty=format:'%h' -n 1", function (error, stdout, stderr) {
     gitCommit = stdout.replaceAll("'", "");
 });
 
+const title = "Help and info";
+
 export const data = {
     name: "help",
     description: "Sends you tips, useful links and all that",
@@ -37,21 +40,11 @@ export const data = {
 };
 
 export async function execute(interaction: ChatInputCommandInteraction) {
-    const embed = new EmbedBuilder()
-        .setAuthor({
-            name: "Freckle",
-            url: "https://add1tive.github.io/freckle/"
-        })
-        .setTitle("Help and info")
-        .setDescription(
-            `Running Freckle version \`${gitCommit}\`.\nVisit the website [here](https://add1tive.github.io/freckle/).`
-        )
-        .setColor("#00b0f4")
-        .setFooter({
-            text: "Freckle",
-            iconURL: "https://us-east-1.tixte.net/uploads/add1tive.tixte.co/favicon.png"
-        })
-        .setTimestamp();
+    const embed = makeGenericEmbed(
+        title,
+        `Running Freckle version \`${gitCommit}\`.\nVisit the website [here](https://add1tive.github.io/freckle/).`,
+        "info"
+    );
 
     await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
 }

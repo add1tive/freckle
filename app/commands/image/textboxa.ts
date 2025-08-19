@@ -33,6 +33,8 @@ const logger = getLogger(["app"]).getChild("textboxa");
 // Freckle
 import { processTextbox } from "helpers/textboxProcessor";
 
+const title = "Textbox animated";
+
 export const data = {
     options: [
         {
@@ -71,17 +73,12 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     fs.mkdirSync(cachePath, { recursive: true });
 
-    const text = interaction.options.getString("text");
+    const text = interaction.options.getString("text") as string; // required
     const charexp = interaction.options.getInteger("charexp");
     const character = interaction.options.getString("character");
     const userId = interaction.user.id;
 
     await interaction.deferReply();
-
-    if (!text) {
-        await interaction.editReply("Failed to input text!");
-        return;
-    }
 
     await processTextbox({
         text,

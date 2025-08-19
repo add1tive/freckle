@@ -32,6 +32,8 @@ const logger = getLogger(["app"]).getChild("textbox");
 // Freckle
 import { processTextbox } from "helpers/textboxProcessor";
 
+const title = "Textbox";
+
 export const data = {
     options: [
         {
@@ -63,15 +65,10 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     let instanceName = randomBytes(12).toString("hex");
     logger.info`received request, assigning name ${instanceName}`;
 
-    const text = interaction.options.getString("text");
+    const text = interaction.options.getString("text") as string; // required
     const charexp = interaction.options.getInteger("charexp");
     const character = interaction.options.getString("character");
     const userId = interaction.user.id;
-
-    if (!text) {
-        await interaction.reply("Failed to input text!");
-        return;
-    }
 
     const attachment = new AttachmentBuilder(
         await processTextbox({
