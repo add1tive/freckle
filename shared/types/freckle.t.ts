@@ -24,7 +24,14 @@ export type UserSettingsC = {
 };
 
 // textbox
-export type TextboxFont = "none" | "Determination Mono" | "Undertale Sans" | "Undertale Papyrus";
+
+export const textboxFonts = [
+    "Determination Mono",
+    "Undertale Sans",
+    "Undertale Papyrus"
+] as const;
+
+export type TextboxFont = (typeof textboxFonts)[number];
 
 export const textboxChars = [
     "noelle",

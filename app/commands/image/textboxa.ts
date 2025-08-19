@@ -31,8 +31,7 @@ import { getLogger } from "@logtape/logtape";
 const logger = getLogger(["app"]).getChild("textboxa");
 
 // Freckle
-import { makeImageNew } from "helpers/textboxRenderer";
-import { TextboxChar } from "@freckle-a1e/shared/types/freckle.t";
+import { makeImageNewer } from "helpers/textboxRendererNew";
 
 export const data = {
     options: [
@@ -74,14 +73,25 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     const text = interaction.options.getString("text");
     const charexp = interaction.options.getInteger("charexp");
-    let character = interaction.options.getString("character") as TextboxChar | null;
-    const size = 2; // used to be customisable, disabled probably forever
+    const character = interaction.options.getString("character");
     const userId = interaction.user.id;
 
-    if (character !== null) character = character.toLowerCase() as TextboxChar;
-
     await interaction.deferReply();
-    await makeImageNew(text, charexp, size, character, userId, cachePath);
+
+    if (!text) {
+        await interaction.editReply("Failed to input text!");
+        return;
+    }
+
+    await makeImageNewer({
+        text,
+        expression: charexp,
+        character,
+        userId,
+        cachePath,
+        darkWorld: null,
+        font: null
+    });
 
     const ffmpeg = spawn(
         "ffmpeg",

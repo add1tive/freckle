@@ -30,8 +30,7 @@ import { getLogger } from "@logtape/logtape";
 const logger = getLogger(["app"]).getChild("textbox");
 
 // Freckle
-import { TextboxChar } from "@freckle-a1e/shared/types/freckle.t";
-import { makeImageNew } from "helpers/textboxRenderer";
+import { makeImageNewer } from "helpers/textboxRendererNew";
 
 export const data = {
     options: [
@@ -62,18 +61,28 @@ export const data = {
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     let instanceName = randomBytes(12).toString("hex");
-    // fs.mkdirSync("cache/" + instanceName, {recursive: true});
     logger.info`received request, assigning name ${instanceName}`;
 
     const text = interaction.options.getString("text");
     const charexp = interaction.options.getInteger("charexp");
-    let character = interaction.options.getString("character") as TextboxChar | null;
-    const size = 2; // used to be customisable, disabled probably forever
+    const character = interaction.options.getString("character");
     const userId = interaction.user.id;
 
-    if (character !== null) character = character.toLowerCase() as TextboxChar;
+    if (!text) {
+        await interaction.reply("Failed to input text!");
+        return;
+    }
+
     const attachment = new AttachmentBuilder(
-        await makeImageNew(text, charexp, size, character, userId),
+        await makeImageNewer({
+            text,
+            userId,
+            character,
+            cachePath: null,
+            darkWorld: null,
+            expression: charexp,
+            font: null
+        }),
         { name: "image.png" }
     );
 
