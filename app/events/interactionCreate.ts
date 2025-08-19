@@ -18,37 +18,50 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ChatInputCommandInteraction, Events, MessageFlags } from "discord.js";
+import { BaseInteraction, Events, MessageFlags } from "discord.js";
 import { getLogger } from "@logtape/logtape";
 
 const logger = getLogger(["app"]).getChild("interactionCreate");
 
 export const name = Events.InteractionCreate;
 
-export async function execute(interaction: ChatInputCommandInteraction) {
-    if (!interaction.isChatInputCommand()) return;
+export async function execute(interaction: BaseInteraction) {
+    if (interaction.isChatInputCommand()) {
+        const command = interaction.client.commands.get(interaction.commandName);
 
-    const command = interaction.client.commands.get(interaction.commandName);
+        if (!command) {
+            logger.error`No command matching ${interaction.commandName} was found.`;
+            return;
+        }
 
-    if (!command) {
-        logger.error`No command matching ${interaction.commandName} was found.`;
-        return;
-    }
+        try {
+            await command.execute(interaction);
+        } catch (error) {
+            logger.error`${error}`;
+            if (interaction.replied || interaction.deferred) {
+                await interaction.followUp({
+                    content: "There was an error while executing this command!",
+                    flags: MessageFlags.Ephemeral
+                });
+            } else {
+                await interaction.reply({
+                    content: "There was an error while executing this command!",
+                    flags: MessageFlags.Ephemeral
+                });
+            }
+        }
+    } else if (interaction.isAutocomplete()) {
+        const command = interaction.client.commands.get(interaction.commandName);
 
-    try {
-        await command.execute(interaction);
-    } catch (error) {
-        logger.error`${error}`;
-        if (interaction.replied || interaction.deferred) {
-            await interaction.followUp({
-                content: "There was an error while executing this command!",
-                flags: MessageFlags.Ephemeral
-            });
-        } else {
-            await interaction.reply({
-                content: "There was an error while executing this command!",
-                flags: MessageFlags.Ephemeral
-            });
+        if (!command) {
+            logger.error`No command matching ${interaction.commandName} was found.`;
+            return;
+        }
+
+        try {
+            await command.autocomplete(interaction);
+        } catch (error) {
+            logger.error`${error}`;
         }
     }
 }
