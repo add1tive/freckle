@@ -7,10 +7,9 @@ A Discord app and its website.
 This is in case you want to run your own instance of Freckle.
 If you came here looking for how to use it as a user, check [Freckle's website](https://add1tive.github.io/freckle/).
 
-1. Install [NodeJS](https://nodejs.org/) and [pnpm](https://pnpm.io/).
-2. Navigate to the [app](./app) folder.
-3. Run `pnpm i`.
-4. Run `pnpx tsx index.ts`.
+1. Install [NodeJS](https://nodejs.org/)2
+2. Install [pnpm](https://pnpm.io/).
+3. Run `pnpm app:start`.
 
 ### Using [tmux](https://github.com/tmux/tmux/wiki)
 
@@ -25,16 +24,11 @@ If you want to stop it, run:
 
 ### Using the bash scripts
 
-The [run script](./app/run.sh) uses the tmux method described above.
+The [run script](./app/server-run.sh) uses the tmux method described above.
 
-There is also an [update script](./app/update-run.sh) that runs `git pull` and then:
+There is also an [update script](./app/update-run.sh) that runs `git pull` and restarts Freckle if it's running.
 
-* restarts Freckle if something *does* get pulled
-* doesn't do anything if there is nothing to pull
-
-Useful for servers where Freckle is expected to be running. I recommend setting up a cron job with it.
-
-If the scripts won't run, run `chmod +x run.sh` and `chmod +x update-run.sh`.
+If the scripts won't run, run `chmod +x *.sh`.
 
 ## Documentation
 
@@ -42,7 +36,7 @@ See [Freckle's website](https://add1tive.github.io/freckle/).
 
 ## Licensing
 
-Freckle's original code (app and website) is licensed under [GPL v3](./LICENSE).
+Freckle's **original** code (app and website) is licensed under [GPL v3](./LICENSE).
 
 Third-party components and their respective licenses are listed below.
 
