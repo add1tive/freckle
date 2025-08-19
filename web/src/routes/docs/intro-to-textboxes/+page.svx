@@ -14,22 +14,19 @@ title: Introduction to Textboxes
 
 Freckle can generate textboxes (currently on UNDERTALE/DELTARUNE) akin to [Undertale text box generator - Demirramon's hideout](https://www.demirramon.com/generators/undertale_text_box_generator).
 
-Has an animated (`/textboxa`) and static (`/textbox`) version.
-
-All textboxes are rendered at 2x scale.
+**The command is `/textbox`.**
 
 An example of such command:
 
-![Screenshot of the /textboxa command output in the Discord client]({base}/images/docs/textbox-1.png)
-
-Both take the same arguments.
+![Screenshot of the textbox command output in the Discord client]({base}/images/docs/textbox-1.png)
 
 ![Screenshot of the arguments popup in the Discord client]({base}/images/docs/textbox-2.png)
 
 * `text`: A string. See [Textbox commands](./textbox-commands). No default, required.
+* `animated`: A boolean. Whether the textbox will be animated or not. Default is on.
 * `charexp`: An integer. See [Expressions table](./expressions-table). Default is `1`.
 * `character`: A string. Must be one of the characters seen in [Expressions table](./expressions-table). Case-insensitive. Default is `noelle`.
-* `darkworld`: Whether to use the Dark World style or not. Leave empty for character defaults.
-* `font`: The font to be displayed. Leave empty for character defaults.
+* `darkworld`: A boolean. Whether to use the Dark World style or not. Leave empty for character defaults.
+* `font`: A string. The font to be displayed. Leave empty for character defaults.
 
 (integer = whole number)
