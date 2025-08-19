@@ -10,5 +10,10 @@
     "onlyBuiltDependencies": [
       "esbuild"
     ]
+  },
+  "scripts": {
+      "app:start": "pnpm --filter app run start",
+      "web:dev": "pnpm --filter web run dev --host",
+      "web:build": "pnpm --filter web run build"
   }
 }

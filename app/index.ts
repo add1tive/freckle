@@ -27,6 +27,7 @@ import { configure, getConsoleSink, getLogger } from "@logtape/logtape";
 import { getPrettyFormatter } from "@logtape/pretty";
 import { getStreamFileSink } from "@logtape/file";
 import { pathToFileURL } from "node:url";
+import { printWelcome } from "helpers/consoleStuff";
 
 fs.mkdirSync(".local/logs", { recursive: true });
 
@@ -50,9 +51,17 @@ await configure({
         console: getConsoleSink({ formatter: prettyCustColor }),
         file: getStreamFileSink(`.local/logs/${dateRn}.log`, { formatter: prettyNoColor })
     },
-    loggers: [{ category: [], lowestLevel: "debug", sinks: ["console", "file"] }]
+    loggers: [
+        { category: ["logtape", "meta"], sinks: [] }, // disabled
+        { category: ["freckle-app"], lowestLevel: "debug", sinks: ["console", "file"] }
+    ]
 });
 const logger = getLogger(["freckle-app"]).getChild("index");
+
+console.clear();
+printWelcome();
+
+logger.info`Starting Freckle...`;
 // -------------
 
 const __dirname = import.meta.dirname;
