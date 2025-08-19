@@ -3,6 +3,9 @@ import { configure, getConsoleSink } from "@logtape/logtape";
 import { getPrettyFormatter } from "@logtape/pretty";
 import { getStreamFileSink } from "@logtape/file";
 
+const CAT_WIDTH = 25;
+const CAT_SEPARATOR = " > ";
+
 export async function setUpLogger() {
     fs.mkdirSync(".local/logs", { recursive: true });
 
@@ -14,14 +17,14 @@ export async function setUpLogger() {
 
     const prettyNoColor = getPrettyFormatter({
         colors: false,
-        categoryWidth: 20,
-        categorySeparator: " > "
+        categoryWidth: CAT_WIDTH,
+        categorySeparator: CAT_SEPARATOR
     });
     const prettyCustColor = getPrettyFormatter({
         messageStyle: null,
         categoryStyle: ["italic"],
-        categoryWidth: 20,
-        categorySeparator: " > "
+        categoryWidth: CAT_WIDTH,
+        categorySeparator: CAT_SEPARATOR
     });
 
     // logger

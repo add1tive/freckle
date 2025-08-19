@@ -26,7 +26,7 @@ import { createCanvas, loadImage, GlobalFonts, Canvas } from "@napi-rs/canvas";
 
 // LogTape
 import { getLogger } from "@logtape/logtape";
-const logger = getLogger(["app"]).getChild("textboxRendererNew");
+const logger = getLogger(["app"]).getChild("textboxProcessor");
 
 // Freckle
 import { getRandomIntInclusive } from "./smallUtils";
@@ -131,7 +131,7 @@ async function saveFrameIfExporting(
     }
 }
 
-export async function makeImageNewer(args: TextboxRendererArguments) {
+export async function processTextbox(args: TextboxRendererArguments) {
     logger.info`Hi from textboxRendererNew!`;
 
     const userSettings = loadUserSettings(args.userId);

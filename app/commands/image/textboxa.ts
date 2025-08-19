@@ -31,7 +31,7 @@ import { getLogger } from "@logtape/logtape";
 const logger = getLogger(["app"]).getChild("textboxa");
 
 // Freckle
-import { makeImageNewer } from "helpers/textboxRendererNew";
+import { processTextbox } from "helpers/textboxProcessor";
 
 export const data = {
     options: [
@@ -83,7 +83,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         return;
     }
 
-    await makeImageNewer({
+    await processTextbox({
         text,
         expression: charexp,
         character,

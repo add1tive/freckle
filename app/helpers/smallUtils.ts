@@ -18,9 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-
 export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function getRandomArbitrary(min: number, max: number): number {
