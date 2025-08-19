@@ -24,7 +24,8 @@ import { UserSettingsC } from "@freckle-a1e/shared/types/freckle.t";
 
 // LogTape
 import { getLogger } from "@logtape/logtape";
-const logger = getLogger(["app"]).getChild("userFiles");
+import path from "node:path";
+const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).replace(".ts", ""));
 
 const ALGORITHM = "aes-256-cbc";
 const IV_LENGTH = 16; // in bytes

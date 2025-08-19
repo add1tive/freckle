@@ -20,13 +20,14 @@
 
 // Node
 import fs from "node:fs/promises";
+import path from "node:path";
 
 // canvas
 import { createCanvas, loadImage, GlobalFonts, Canvas } from "@napi-rs/canvas";
 
 // LogTape
 import { getLogger } from "@logtape/logtape";
-const logger = getLogger(["app"]).getChild("textboxProcessor");
+const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename));
 
 // Freckle
 import { getRandomIntInclusive } from "./smallUtils";

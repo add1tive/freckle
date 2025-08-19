@@ -31,7 +31,7 @@ printWelcome();
 
 await setUpLogger();
 
-const logger = getLogger(["app"]).getChild("index");
+const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).replace(".ts", ""));
 
 logger.info`Starting Freckle...`;
 

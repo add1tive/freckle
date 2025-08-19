@@ -23,7 +23,8 @@ import { ChatInputCommandInteraction, MessageFlags } from "discord.js";
 import { makeGenericEmbed } from "helpers/genericEmbed";
 import { exec } from "node:child_process";
 
-const logger = getLogger(["app"]).getChild("help");
+import path from "node:path";
+const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).replace(".ts", ""));
 
 let gitCommit = "unknown";
 exec("git log --pretty=format:'%h' -n 1", function (error, stdout, stderr) {

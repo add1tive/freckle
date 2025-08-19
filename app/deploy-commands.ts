@@ -26,7 +26,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 await setUpLogger();
-const logger = getLogger(["app"]).getChild("deploy-commands");
+const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).replace(".ts", ""));
 
 const __dirname = import.meta.dirname;
 

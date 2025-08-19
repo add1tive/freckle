@@ -20,6 +20,7 @@
 
 // Node
 import fs from "node:fs";
+import path from "node:path";
 import { randomBytes } from "node:crypto";
 import { spawn } from "child_process";
 
@@ -33,7 +34,7 @@ import {
 
 // LogTape
 import { getLogger } from "@logtape/logtape";
-const logger = getLogger(["app"]).getChild("textboxa");
+const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).replace(".ts", ""));
 
 // Freckle
 import { processTextbox } from "helpers/textboxProcessor";
@@ -114,7 +115,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     await interaction.deferReply();
 
-    if (animated) {
+    if (animated === null || animated === true) { // animated by default
         await processTextbox({
             text,
             expression,

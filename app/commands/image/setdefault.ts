@@ -24,7 +24,8 @@ import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord
 import { loadUserSettings, saveUserSettings } from "helpers/userFiles";
 import { makeGenericEmbed } from "helpers/genericEmbed";
 
-const logger = getLogger(["app"]).getChild("changechar");
+import path from "node:path";
+const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).replace(".ts", ""));
 
 const title = "Set default textbox character";
 
