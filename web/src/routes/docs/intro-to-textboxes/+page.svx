@@ -16,12 +16,6 @@ Freckle can generate textboxes (currently on UNDERTALE/DELTARUNE) akin to [Under
 
 **The command is `/textbox`.**
 
-An example of such command:
-
-![Screenshot of the textbox command output in the Discord client]({base}/images/docs/textbox-1.png)
-
-![Screenshot of the arguments popup in the Discord client]({base}/images/docs/textbox-2.png)
-
 * `text`: A string. See [Textbox commands](./textbox-commands). No default, required.
 * `animated`: A boolean. Whether the textbox will be animated or not. Default is on.
 * `charexp`: An integer. See [Expressions table](./expressions-table). Default is `1`.
