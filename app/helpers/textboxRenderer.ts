@@ -72,8 +72,7 @@ function processCommand(rawCmd: string): f.TextboxCommand | null {
     let cmd: f.TextboxCommand | null = null;
     switch (name) {
         case "glow":
-            if (m.args === null || m.args[0] === null || m.args[1] === null || m.args[2] === null)
-                return null;
+            if (m.args === null || m.args.includes("")) return null;
             cmd = {
                 name,
                 args: {
@@ -84,7 +83,7 @@ function processCommand(rawCmd: string): f.TextboxCommand | null {
             } as f.TextBoxCommand_Glow;
             break;
         case "color":
-            if (m.args === null || m.args[0] === null) return null;
+            if (m.args === null || m.args[0] === "") return null;
             cmd = {
                 name,
                 args: {
@@ -93,7 +92,7 @@ function processCommand(rawCmd: string): f.TextboxCommand | null {
             } as f.TextBoxCommand_Color;
             break;
         case "shake":
-            if (m.args === null || m.args[0] === null) return null;
+            if (m.args === null || m.args[0] === "") return null;
             cmd = {
                 name,
                 args: {
