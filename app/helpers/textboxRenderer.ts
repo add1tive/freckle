@@ -26,7 +26,7 @@ import { createCanvas, loadImage, GlobalFonts, Canvas, SKRSContext2D } from "@na
 
 // LogTape
 import { getLogger } from "@logtape/logtape";
-const logger = getLogger(["freckle-app"]).getChild("textboxRender");
+const logger = getLogger(["app"]).getChild("textboxRender");
 
 // Freckle
 import { getRandomIntInclusive } from "./smallUtils";

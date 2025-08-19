@@ -22,7 +22,7 @@ import { getLogger } from "@logtape/logtape";
 import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
 import { exec } from "node:child_process";
 
-const logger = getLogger(["freckle-app"]).getChild("help");
+const logger = getLogger(["app"]).getChild("help");
 
 let gitCommit = "unknown";
 exec("git log --pretty=format:'%h' -n 1", function (error, stdout, stderr) {

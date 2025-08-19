@@ -21,7 +21,7 @@
 import { ChatInputCommandInteraction, Events, MessageFlags } from "discord.js";
 import { getLogger } from "@logtape/logtape";
 
-const logger = getLogger(["freckle-app"]).getChild("interactionCreate");
+const logger = getLogger(["app"]).getChild("interactionCreate");
 
 export const name = Events.InteractionCreate;
 

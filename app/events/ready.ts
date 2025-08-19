@@ -21,7 +21,7 @@
 import { Client, Events } from "discord.js";
 import { getLogger } from "@logtape/logtape";
 
-const logger = getLogger(["freckle-app"]).getChild("ready");
+const logger = getLogger(["app"]).getChild("ready");
 
 export const name = Events.ClientReady;
 

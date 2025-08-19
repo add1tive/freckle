@@ -18,41 +18,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { getLogger } from "@logtape/logtape";
 import { ApplicationCommand, REST, Routes } from "discord.js";
+import { setUpLogger } from "helpers/loggerSetup";
 import fs from "node:fs";
 import path from "node:path";
-
-// -- LOGGING --
-import { configure, getConsoleSink, getLogger } from "@logtape/logtape";
-import { getPrettyFormatter } from "@logtape/pretty";
-import { getStreamFileSink } from "@logtape/file";
 import { pathToFileURL } from "node:url";
 
-fs.mkdirSync(".local/logs", { recursive: true });
-
-const dateRn = new Date().toISOString().replace(/T/, "_").replace(/\..+/, "").replaceAll(":", "-");
-
-const prettyNoColor = getPrettyFormatter({
-    colors: false,
-    categoryWidth: 25,
-    categorySeparator: " > "
-});
-const prettyCustColor = getPrettyFormatter({
-    messageStyle: null,
-    categoryStyle: ["italic"],
-    categoryWidth: 25,
-    categorySeparator: " > "
-});
-
-await configure({
-    sinks: {
-        console: getConsoleSink({ formatter: prettyCustColor }),
-        file: getStreamFileSink(`.local/logs/${dateRn}.log`, { formatter: prettyNoColor })
-    },
-    loggers: [{ category: [], lowestLevel: "debug", sinks: ["console", "file"] }]
-});
-const logger = getLogger(["freckle-app"]).getChild("deploy-commands");
-// -------------
+setUpLogger();
+const logger = getLogger(["app"]).getChild("deploy-commands");
 
 const __dirname = import.meta.dirname;
 

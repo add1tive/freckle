@@ -21,48 +21,19 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Client, Collection, GatewayIntentBits } from "discord.js";
-
-// -- LOGGING --
-import { configure, getConsoleSink, getLogger } from "@logtape/logtape";
-import { getPrettyFormatter } from "@logtape/pretty";
-import { getStreamFileSink } from "@logtape/file";
-import { pathToFileURL } from "node:url";
+import { getLogger } from "@logtape/logtape";
 import { printWelcome } from "helpers/consoleStuff";
-
-fs.mkdirSync(".local/logs", { recursive: true });
-
-const dateRn = new Date().toISOString().replace(/T/, "_").replace(/\..+/, "").replaceAll(":", "-");
-
-const prettyNoColor = getPrettyFormatter({
-    colors: false,
-    categoryWidth: 25,
-    categorySeparator: " > "
-});
-const prettyCustColor = getPrettyFormatter({
-    messageStyle: null,
-    categoryStyle: ["italic"],
-    categoryWidth: 25,
-    categorySeparator: " > "
-});
-
-// logger
-await configure({
-    sinks: {
-        console: getConsoleSink({ formatter: prettyCustColor }),
-        file: getStreamFileSink(`.local/logs/${dateRn}.log`, { formatter: prettyNoColor })
-    },
-    loggers: [
-        { category: ["logtape", "meta"], sinks: [] }, // disabled
-        { category: ["freckle-app"], lowestLevel: "debug", sinks: ["console", "file"] }
-    ]
-});
-const logger = getLogger(["freckle-app"]).getChild("index");
+import { pathToFileURL } from "node:url";
+import { setUpLogger } from "helpers/loggerSetup";
 
 console.clear();
 printWelcome();
 
+await setUpLogger();
+
+const logger = getLogger(["app"]).getChild("index");
+
 logger.info`Starting Freckle...`;
-// -------------
 
 const __dirname = import.meta.dirname;
 

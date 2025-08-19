@@ -27,7 +27,7 @@ import { AttachmentBuilder, ChatInputCommandInteraction } from "discord.js";
 
 // LogTape
 import { getLogger } from "@logtape/logtape";
-const logger = getLogger(["freckle-app"]).getChild("textbox");
+const logger = getLogger(["app"]).getChild("textbox");
 
 // Freckle
 import { TextboxChar } from "@freckle-a1e/shared/types/freckle.t";
