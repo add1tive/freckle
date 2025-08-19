@@ -159,7 +159,12 @@ export async function processTextbox(args: TextboxRendererArguments) {
         else args.darkWorld = false;
     }
 
-    if (args.font) args.font = args.font.toLowerCase();
+    if (args.font)
+        args.font = args.font
+            .replace(/\s{2,}/g, " ") // remove double spaces
+            .split(" ")
+            .map((word) => word[0].toUpperCase() + word.substring(1)) // make Title Case
+            .join(" ");
     // @ts-expect-error
     if (!args.font || !f.textboxFonts.includes(args.font)) {
         if (char.customFont) args.font = char.customFont;
@@ -191,7 +196,7 @@ export async function processTextbox(args: TextboxRendererArguments) {
         const dwBox = await loadImage(
             "../shared/assets/images/utdr_talk/hud/darkworld_shrunken.png"
         );
-        bgCtx.drawImage(dwBox, 0, 0);
+        bgCtx.drawImage(dwBox, 0, 0, bgCanvas.width, bgCanvas.height);
     }
 
     // get spritesheeet (ss) rows, columns...
@@ -402,7 +407,11 @@ export async function processTextbox(args: TextboxRendererArguments) {
             //     2. there was no "{" after "$"
             //     3. the command wasn't closed
             // yes. that's right. i am just gonna let an unclosed command pass as normal text :)
-            if (salad[i - 1] !== "\\" && salad[i + 1] === "{" && args.text.indexOf("}", i + 2) !== -1) {
+            if (
+                salad[i - 1] !== "\\" &&
+                salad[i + 1] === "{" &&
+                args.text.indexOf("}", i + 2) !== -1
+            ) {
                 // extract the raw command string: index of "{" - command - index of "}"
                 const rawCmd = args.text.slice(i + 2, args.text.indexOf("}", i + 2));
 

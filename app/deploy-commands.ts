@@ -25,7 +25,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-setUpLogger();
+await setUpLogger();
 const logger = getLogger(["app"]).getChild("deploy-commands");
 
 const __dirname = import.meta.dirname;

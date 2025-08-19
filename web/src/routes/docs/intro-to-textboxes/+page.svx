@@ -29,5 +29,7 @@ Both take the same arguments.
 * `text`: A string. See [Textbox commands](./textbox-commands). No default, required.
 * `charexp`: An integer. See [Expressions table](./expressions-table). Default is `1`.
 * `character`: A string. Must be one of the characters seen in [Expressions table](./expressions-table). Case-insensitive. Default is `noelle`.
+* `darkworld`: Whether to use the Dark World style or not. Leave empty for character defaults.
+* `font`: The font to be displayed. Leave empty for character defaults.
 
 (integer = whole number)

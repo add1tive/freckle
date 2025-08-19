@@ -54,6 +54,19 @@ export const data = {
             name: "character",
             description: "The character to be displayed (set your default with /setdefault)",
             required: false
+        },
+        {
+            type: 5,
+            name: "darkworld",
+            description:
+                "Whether to use the Dark World style or not. Leave empty for character defaults.",
+            required: false
+        },
+        {
+            type: 3,
+            name: "font",
+            description: "The font to be displayed. Leave empty for character defaults.",
+            required: false
         }
     ],
     name: "textboxa",
@@ -74,35 +87,36 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     fs.mkdirSync(cachePath, { recursive: true });
 
     const text = interaction.options.getString("text") as string; // required
-    const charexp = interaction.options.getInteger("charexp");
+    const expression = interaction.options.getInteger("charexp");
     const character = interaction.options.getString("character");
+    const darkWorld = interaction.options.getBoolean("darkworld");
+    const font = interaction.options.getString("font");
+
     const userId = interaction.user.id;
 
     await interaction.deferReply();
 
     await processTextbox({
         text,
-        expression: charexp,
+        expression,
         character,
         userId,
-        cachePath,
-        darkWorld: null,
-        font: null
+        darkWorld,
+        font,
+        cachePath
     });
 
+    // prettier-ignore
     const ffmpeg = spawn(
         "ffmpeg",
         [
-            "-f",
-            "image2",
-            "-framerate",
-            "30",
-            "-i",
-            "%003d.png",
-            "-lossless",
-            "1",
-            "-loop",
-            "0",
+            "-f", "image2",
+            "-framerate", "30",
+            "-i", "%003d.png",
+            // Warning: Discord lossy compresses anyway
+            // ...however, lossless files actually end up being smaller
+            "-lossless", "1",
+            "-loop", "0",
             "out.webp"
         ],
         { cwd: cachePath }
