@@ -132,8 +132,6 @@ async function saveFrameIfExporting(
 }
 
 export async function processTextbox(args: TextboxRendererArguments) {
-    logger.info`Hi from textboxRendererNew!`;
-
     const userSettings = loadUserSettings(args.userId);
 
     // scale. if I ever change my mind in the future, the user will be able to adjust it.
