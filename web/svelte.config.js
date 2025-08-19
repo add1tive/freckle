@@ -22,7 +22,7 @@ const config = {
         paths: {
             base: process.argv.includes("dev") ? "" : "/freckle"
         },
-        alias: { $components: "src/components", $shared: "../shared" }
+        alias: { $components: "src/components" }
     },
     extensions: [".svelte", ".svx"]
 };
