@@ -6,4 +6,8 @@ bun.lock
 bun.lockb
 
 # Other
-tsconfig.json
+web/.svelte-kit/
+web/src/components/svg/
+web/static/styles/modern-normalize
+web/static/styles/fonts.css
+web/static/styles/prism-dracula.css
