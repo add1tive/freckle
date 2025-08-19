@@ -1,7 +1,3 @@
-<svelte:head>
-    <title>Home &ndash; Freckle</title>
-</svelte:head>
-
 <script lang="ts">
     /*
      * Freckle - a Discord app and its website
@@ -39,6 +35,10 @@
     });
 </script>
 
+<svelte:head>
+    <title>Home &ndash; Freckle</title>
+</svelte:head>
+
 <!-- TODO: make noelle's thingy glow + fix button icon sizes -->
 
 <div bind:this={bgContCont} id="bgContCont">
@@ -63,8 +63,7 @@
         </div>
     </div>
     <div id="thingBelowGoofy">
-        <span id="subtitle"
-            >a Discord app to make your day just a tiny bit more interesting</span>
+        <span id="subtitle">a Discord app to make your day just a tiny bit more interesting</span>
         <span id="disclaimer">in very early private access</span>
     </div>
     <div id="mainButtons">

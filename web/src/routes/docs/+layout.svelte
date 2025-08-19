@@ -21,7 +21,7 @@
 
     import "material-symbols";
     import { base } from "$app/paths";
-    import { page } from '$app/state';
+    import { page } from "$app/state";
     let { children } = $props();
 
     function linkIsCurrentDocs(id: string) {
@@ -41,7 +41,9 @@
 </script>
 
 {#snippet docsNavLink(articleId: ArticleId)}
-    <li class="{linkIsCurrentDocs(articleId) ? "active" : ""}"><a href={`${base}/docs/${articleId}`}>{articleNameMap[articleId]}</a></li>
+    <li class={linkIsCurrentDocs(articleId) ? "active" : ""}>
+        <a href={`${base}/docs/${articleId}`}>{articleNameMap[articleId]}</a>
+    </li>
 {/snippet}
 
 <div id="main">
@@ -61,13 +63,14 @@
 </div>
 
 <div id="toTopBtnDiv">
-    <a href="#top" id="toTopBtn"><span class="material-symbols-outlined" aria-hidden="true">keyboard_arrow_up</span></a>
+    <a href="#top" id="toTopBtn"
+        ><span class="material-symbols-outlined" aria-hidden="true">keyboard_arrow_up</span></a>
 </div>
 
 <style>
     :root {
         --sidebar-width: 18rem;
-        --whatever-this-is: max(var(--sidebar-width), calc(.5 * 100vw - 30rem));
+        --whatever-this-is: max(var(--sidebar-width), calc(0.5 * 100vw - 30rem));
     }
     #main {
         min-height: calc(100dvh - 4rem);

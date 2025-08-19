@@ -32,7 +32,7 @@
         "textboxOffsetX": 11,
         "textboxOffsetY": 15,
         "portraitWidth": 60,
-        "portraitHeight": 43 ,
+        "portraitHeight": 43,
         "spritesheetColumns": 11,
         "expressionCount": 25
     },
@@ -41,7 +41,7 @@
         "textboxOffsetX": 9,
         "textboxOffsetY": 11,
         "portraitWidth": 54,
-        "portraitHeight": 54 ,
+        "portraitHeight": 54,
         "spritesheetColumns": 5,
         "expressionCount": 10
     },
@@ -50,7 +50,7 @@
         "textboxOffsetX": 13,
         "textboxOffsetY": 14,
         "portraitWidth": 47,
-        "portraitHeight": 49 ,
+        "portraitHeight": 49,
         "spritesheetColumns": 15,
         "expressionCount": 15
     },

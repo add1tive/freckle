@@ -1,7 +1,3 @@
-<svelte:head>
-    <title>Command builder &ndash; Freckle</title>
-</svelte:head>
-
 <script lang="ts">
     /*
      * Freckle - a Discord app and its website
@@ -25,6 +21,10 @@
 
     import { base } from "$app/paths";
 </script>
+
+<svelte:head>
+    <title>Command builder &ndash; Freckle</title>
+</svelte:head>
 
 <p>Not yet implemented, please consult the <a href={`${base}/docs/textbox-commands`}>docs</a>!</p>
 

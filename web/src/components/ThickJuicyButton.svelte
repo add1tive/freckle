@@ -21,20 +21,31 @@
 
     import "material-symbols";
 
-    let { icon, text, href, color1, color2, color3 }: {
-        icon: string, // svg
-        text: string,
-        href: string,
-        color1: string,
-        color2: string,
-        color3: string
+    let {
+        icon,
+        text,
+        href,
+        color1,
+        color2,
+        color3
+    }: {
+        icon: string; // svg
+        text: string;
+        href: string;
+        color1: string;
+        color2: string;
+        color3: string;
     } = $props();
 </script>
 
-<a {href} id="main" style="background: linear-gradient(180deg, {color1} 0%, {color2} 16%, {color3} 34%);">
+<a
+    {href}
+    id="main"
+    style="background: linear-gradient(180deg, {color1} 0%, {color2} 16%, {color3} 34%);">
     <span id="leftIcon" class="material-symbols-outlined" aria-hidden="true">{icon}</span>
     <span id="text">{text}</span>
-    <span id="rightIcon" class="material-symbols-outlined" aria-hidden="true">keyboard_arrow_right</span>
+    <span id="rightIcon" class="material-symbols-outlined" aria-hidden="true"
+        >keyboard_arrow_right</span>
 </a>
 
 <style>

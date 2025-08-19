@@ -1,7 +1,3 @@
-<svelte:head>
-    <title>Add or invite &ndash; Freckle</title>
-</svelte:head>
-
 <script lang="ts">
     /*
      * Freckle - a Discord app and its website
@@ -23,6 +19,10 @@
      * along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
 </script>
+
+<svelte:head>
+    <title>Add or invite &ndash; Freckle</title>
+</svelte:head>
 
 <p>You can't access Freckle yet, sorry!</p>
 

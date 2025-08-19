@@ -23,7 +23,7 @@
 @import url(prism-dracula.css);
 
 :root {
-  color-scheme: dark;
+    color-scheme: dark;
 }
 html {
     background-color: #25222d;
@@ -33,7 +33,13 @@ html {
 body {
     min-height: 100dvh;
 }
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
     margin: 0;
 }
 a:link {
@@ -67,7 +73,12 @@ li {
     margin: 0.5rem 0;
     line-height: 1.5;
 }
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     display: flex;
 }
 p {
@@ -120,7 +131,7 @@ a:has(.header-link):hover {
     transition: 200ms;
     pointer-events: none;
 }
-.code-block-copy-btn:hover > .material-symbols-outlined  {
+.code-block-copy-btn:hover > .material-symbols-outlined {
     opacity: 1;
 }
 .code-block-copy-btn-tooltip {
@@ -139,7 +150,7 @@ a:has(.header-link):hover {
 
 :root {
     --sidebar-width: 20rem;
-    --whatever-this-is: max(var(--sidebar-width), calc(.5 * 100vw - 30rem));
+    --whatever-this-is: max(var(--sidebar-width), calc(0.5 * 100vw - 30rem));
     --toc-left-padding: calc(100vw - (var(--whatever-this-is)) - 2rem);
 }
 .toc {

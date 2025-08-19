@@ -1,10 +1,7 @@
 {
-  "compilerOptions": {
-    "baseUrl": "."
-  },
-  "references": [
-    { "path": "./app" },
-    { "path": "./web" }
-  ],
-  "files": []
+    "compilerOptions": {
+        "baseUrl": "."
+    },
+    "references": [{ "path": "./app" }, { "path": "./web" }],
+    "files": []
 }

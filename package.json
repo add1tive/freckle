@@ -1,23 +1,23 @@
 {
-  "name": "freckle-a1e",
-  "description": "Freckle monorepo",
-  "version": "0.0.1",
-  "author": "add1tive",
-  "license": "(MIT OR GPL-3.0)",
-  "private": true,
-  "type": "module",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
-  },
-  "scripts": {
-    "app:start": "pnpm --filter app run start",
-    "web:dev": "pnpm --filter web run dev --host",
-    "web:build": "pnpm --filter web run build"
-  },
-  "dependencies": {
-    "prettier": "^3.6.2",
-    "prettier-plugin-svelte": "^3.4.0"
-  }
+    "name": "freckle-a1e",
+    "description": "Freckle monorepo",
+    "version": "0.0.1",
+    "author": "add1tive",
+    "license": "(MIT OR GPL-3.0)",
+    "private": true,
+    "type": "module",
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "esbuild"
+        ]
+    },
+    "scripts": {
+        "app:start": "pnpm --filter app run start",
+        "web:dev": "pnpm --filter web run dev --host",
+        "web:build": "pnpm --filter web run build"
+    },
+    "dependencies": {
+        "prettier": "^3.6.2",
+        "prettier-plugin-svelte": "^3.4.0"
+    }
 }

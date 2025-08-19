@@ -26,7 +26,11 @@
 
     import { base } from "$app/paths";
     import spriteInfo_ from "@freckle-a1e/shared/assets/images/utdr_talk/spriteInfo.json";
-    import type { SpriteInfo, SpriteInfoChar, TextboxChar } from "@freckle-a1e/shared/types/freckle.t";
+    import type {
+        SpriteInfo,
+        SpriteInfoChar,
+        TextboxChar
+    } from "@freckle-a1e/shared/types/freckle.t";
     const spriteInfo = spriteInfo_ as unknown as SpriteInfo;
     const characters = Object.keys(spriteInfo);
 
@@ -113,14 +117,15 @@
     {/if}
     <div style="display: flex; flex-wrap: wrap;">
         {#each { length: spriteInfoChar.expressionCount }, i}
-            <button class="exp-cont" onclick={() => navigator.clipboard.writeText((i + 1).toString())}>
+            <button
+                class="exp-cont"
+                onclick={() => navigator.clipboard.writeText((i + 1).toString())}>
                 <div style={getIconContainerStyle(char)}>
-                    <div class="thumb" style={getIconStyle(char, i)}>
-                </div>
-                <div class="table-num-container">
-                    <span>{i + 1}</span>
-                </div>
-            </button>
+                    <div class="thumb" style={getIconStyle(char, i)}></div>
+                    <div class="table-num-container">
+                        <span>{i + 1}</span>
+                    </div>
+                </div></button>
         {/each}
     </div>
 {/snippet}

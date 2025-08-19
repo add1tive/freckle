@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import util from 'node:util';
-import child_process from 'node:child_process';
+import util from "node:util";
+import child_process from "node:child_process";
 const exec = util.promisify(child_process.exec);
 import { hex, bold, gray, italic } from "ansis";
 

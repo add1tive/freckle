@@ -24,11 +24,7 @@ export type UserSettingsC = {
 };
 
 // textbox
-export type TextboxFont =
-    | "none"
-    | "Determination Mono"
-    | "Undertale Sans"
-    | "Undertale Papyrus";
+export type TextboxFont = "none" | "Determination Mono" | "Undertale Sans" | "Undertale Papyrus";
 
 export const textboxChars = [
     "noelle",
@@ -41,7 +37,7 @@ export const textboxChars = [
     "sans"
 ] as const;
 
-export type TextboxChar = typeof textboxChars[number];
+export type TextboxChar = (typeof textboxChars)[number];
 
 export type SpriteInfoChar = {
     readonly name: string;
@@ -61,15 +57,11 @@ export type SpriteInfo = {
     [T in TextboxChar]: SpriteInfoChar;
 };
 
-export type TextboxCommandName =
-    | "glow"
-    | "color"
-    | "shake"
-    | "reset";
+export type TextboxCommandName = "glow" | "color" | "shake" | "reset";
 
 interface TextboxCommandBase {
     name: TextboxCommandName;
-};
+}
 
 export interface TextBoxCommand_Glow extends TextboxCommandBase {
     args: {
@@ -93,10 +85,7 @@ export interface TextBoxCommand_Shake extends TextboxCommandBase {
 
 export interface TextBoxCommand_Reset extends TextboxCommandBase {}
 
-export type TextboxCommand =
-    | TextBoxCommand_Glow
-    | TextBoxCommand_Color
-    | TextBoxCommand_Reset;
+export type TextboxCommand = TextBoxCommand_Glow | TextBoxCommand_Color | TextBoxCommand_Reset;
 
 export interface TextboxObject {
     content: string;

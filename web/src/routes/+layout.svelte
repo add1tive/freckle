@@ -30,7 +30,9 @@
 </script>
 
 {#snippet navLink(name: string, link?: string)}
-    <a class={linkIsCurrent(name) ? "active" : ""} href={link ? `${base}/${link}` : `${base}/${name}`}>{name}</a>
+    <a
+        class={linkIsCurrent(name) ? "active" : ""}
+        href={link ? `${base}/${link}` : `${base}/${name}`}>{name}</a>
 {/snippet}
 
 <nav>

@@ -13,8 +13,8 @@ If you came here looking for how to use it as a user, check [Freckle's website](
     1. `TOKEN` is your Discord app's bot token
     2. `CLIENT_ID` is your Discord app's ID
     3. `SECRET` can be any string
-        * it acts as a password for encrypted user files (such as their settings)
-        * if you ever lose it, you'll lose that data too
+        - it acts as a password for encrypted user files (such as their settings)
+        - if you ever lose it, you'll lose that data too
 4. Run `pnpm install` or `pnpm i`.
 5. Run `pnpm app:start` (or `pnpm start` if you're inside the app/ folder).
 

@@ -59,7 +59,7 @@ export const data = {
     description: "Generate an animated UTDR textbox",
     integration_types: [1],
     contexts: [0, 1, 2]
-}
+};
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     let instanceName = randomBytes(12).toString("hex");

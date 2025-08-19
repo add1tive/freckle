@@ -58,7 +58,7 @@ export const data = {
     description: "Generate a UTDR textbox",
     integration_types: [1],
     contexts: [0, 1, 2]
-}
+};
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     let instanceName = randomBytes(12).toString("hex");
@@ -79,4 +79,3 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     await interaction.reply({ files: [attachment] });
 }
-

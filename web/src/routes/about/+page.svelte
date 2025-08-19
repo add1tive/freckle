@@ -1,8 +1,3 @@
-
-<svelte:head>
-    <title>About &ndash; Freckle</title>
-</svelte:head>
-
 <script lang="ts">
     /*
      * Freckle - a Discord app and its website
@@ -27,6 +22,10 @@
     import LogoWithText from "$components/svg/LogoWithText.svelte";
 </script>
 
+<svelte:head>
+    <title>About &ndash; Freckle</title>
+</svelte:head>
+
 <div id="main">
     <div id="logoDiv">
         <div id="logoContainer"><LogoWithText /></div>
@@ -36,8 +35,13 @@
         <p>&copy; add1tive 2025</p>
     </div>
     <div>
-        <p>Home page character: <a href="https://deltarune.wiki/w/Noelle_Holiday" target="_blank">Noelle Holiday</a> from DELTARUNE</p>
-        <p>GitHub repo: <a href="https://github.com/add1tive/freckle" target="_blank">freckle</a></p>
+        <p>
+            Home page character: <a href="https://deltarune.wiki/w/Noelle_Holiday" target="_blank"
+                >Noelle Holiday</a> from DELTARUNE
+        </p>
+        <p>
+            GitHub repo: <a href="https://github.com/add1tive/freckle" target="_blank">freckle</a>
+        </p>
     </div>
 </div>
 
