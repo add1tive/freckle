@@ -33,7 +33,7 @@ const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).r
 import { getRandomIntInclusive } from "./smallUtils";
 import * as f from "@freckle-a1e/shared/types/freckle.t"; // f for Freckle
 import spriteInfo_ from "@freckle-a1e/shared/assets/images/utdr_talk/spriteInfo.json";
-import { loadUserSettings } from "./userFiles";
+import { loadUserSettings, readUserFile } from "./userFiles";
 const spriteInfo = spriteInfo_ as unknown as f.SpriteInfo; // s for spriteInfo
 
 GlobalFonts.registerFromPath("assets/fonts/DeterminationMono.ttf", "Determination Mono");
@@ -139,16 +139,34 @@ export async function processTextbox(args: TextboxRendererArguments) {
     // purposefully not in the "c" consts object
     const s = 2;
 
+    const usingUserCharacter =
+        // if "character" wasn't left blank
+        args.character &&
+        // if user has custom characters
+        userSettings?.customCharacters &&
+        // is user has the specified user character
+        Object.keys(userSettings?.customCharacters).includes(args.character)
+            ? true
+            : false;
+
     // add missing user arguments and fix existing
     if (args.character) args.character = args.character.toLowerCase();
-    // @ts-expect-error
-    if (!args.character || !f.textboxChars.includes(args.character)) {
+    if (
+        // 1. if "character" was left blank
+        // 2. if character isn't a built in one
+        // 3. if character isn't a custom user one
+        !args.character ||
+        !((f.textboxChars as readonly string[]).includes(args.character) || usingUserCharacter)
+    ) {
         if (userSettings) {
             if (userSettings.character) args.character = userSettings.character;
             else args.character = c.DEFAULT_CHAR;
         } else args.character = c.DEFAULT_CHAR;
     }
-    let char = spriteInfo[args.character as f.TextboxChar];
+
+    let char: f.SpriteInfoChar | f.SpriteInfoCustomChar = !usingUserCharacter
+        ? spriteInfo[args.character as f.TextboxChar]
+        : (userSettings?.customCharacters as f.CustomCharCollection)[args.character];
 
     if (!args.expression) args.expression = 1;
     else if (args.expression > char.expressionCount) args.expression = 1;
@@ -158,14 +176,14 @@ export async function processTextbox(args: TextboxRendererArguments) {
         else args.darkWorld = false;
     }
 
+    // * unnecessary since it's a choicer
     if (args.font)
         args.font = args.font
             .replace(/\s{2,}/g, " ") // remove double spaces
             .split(" ")
             .map((word) => word[0].toUpperCase() + word.substring(1)) // make Title Case
             .join(" ");
-    // @ts-expect-error
-    if (!args.font || !f.textboxFonts.includes(args.font)) {
+    if (!args.font || !(f.textboxFonts as readonly string[]).includes(args.font)) {
         if (char.customFont) args.font = char.customFont;
         else args.font = c.DEFAULT_FONT;
     }
@@ -206,7 +224,14 @@ export async function processTextbox(args: TextboxRendererArguments) {
 
     // prepare portrait image (scale it)
     // ! CHANGE PATH HERE TOO!
-    const charTalkOg = await loadImage(`../shared/assets/images/utdr_talk/${args.character}.png`);
+    const charTalkOg = await loadImage(
+        !usingUserCharacter
+            ? `../shared/assets/images/utdr_talk/${args.character}.png`
+            : (readUserFile(
+                  args.userId,
+                  path.join("char", (char as f.SpriteInfoCustomChar).fileName)
+              ) as Buffer<ArrayBuffer>)
+    );
     const charTalkCanvas = createCanvas(char.portraitWidth, char.portraitHeight);
     const charTalkCtx = charTalkCanvas.getContext("2d");
     charTalkCtx.drawImage(

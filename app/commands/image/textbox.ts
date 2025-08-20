@@ -39,6 +39,7 @@ const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).r
 // Freckle
 import { processTextbox } from "helpers/textboxProcessor";
 import { textboxChars } from "@freckle-a1e/shared/types/freckle.t";
+import { loadUserSettings } from "helpers/userFiles";
 
 const title = "Textbox";
 
@@ -87,8 +88,12 @@ export const data = new SlashCommandBuilder()
     );
 
 export async function autocomplete(interaction: AutocompleteInteraction) {
+    const userSettings = loadUserSettings(interaction.user.id);
+    let choices = textboxChars as unknown as string[];
+    if (userSettings && userSettings.customCharacters)
+        choices = choices.concat(Object.keys(userSettings.customCharacters));
+
     const focusedValue = interaction.options.getFocused();
-    const choices = textboxChars;
     const filtered = choices.filter((choice) => choice.startsWith(focusedValue));
     await interaction.respond(filtered.map((choice) => ({ name: choice, value: choice })));
 }

@@ -19,17 +19,19 @@
  */
 
 // general
+export type SpriteInfoCustomChar = SpriteInfoChar & { fileName: string };
+
+export interface CustomCharCollection {
+    [id: string]: SpriteInfoCustomChar;
+}
+
 export type UserSettingsC = {
-    character: TextboxChar;
+    character?: TextboxChar;
+    customCharacters?: CustomCharCollection;
 };
 
 // textbox
-
-export const textboxFonts = [
-    "Determination Mono",
-    "Undertale Sans",
-    "Undertale Papyrus"
-] as const;
+export const textboxFonts = ["Determination Mono", "Undertale Sans", "Undertale Papyrus"] as const;
 
 export type TextboxFont = (typeof textboxFonts)[number];
 
