@@ -19,7 +19,12 @@
  */
 
 // general
-export type SpriteInfoCustomChar = SpriteInfoChar & { fileName: string };
+export type SpriteInfoCustomChar = SpriteInfoChar & {
+    fileName: string;
+    sharedLink?: string; // only for private users, so user can remove by id
+    sharedBy?: string; // only for the global user
+    expires?: number; // only for the global user
+};
 
 export interface CustomCharCollection {
     [id: string]: SpriteInfoCustomChar;
@@ -28,6 +33,7 @@ export interface CustomCharCollection {
 export type UserSettingsC = {
     character?: TextboxChar;
     customCharacters?: CustomCharCollection;
+    sharedLinks?: string[]; // so user can remove by link
 };
 
 // textbox

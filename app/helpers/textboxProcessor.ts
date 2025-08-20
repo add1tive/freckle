@@ -229,7 +229,7 @@ export async function processTextbox(args: TextboxRendererArguments) {
             ? `../shared/assets/images/utdr_talk/${args.character}.png`
             : (readUserFile(
                   args.userId,
-                  path.join("char", (char as f.SpriteInfoCustomChar).fileName)
+                  path.join("chars", (char as f.SpriteInfoCustomChar).fileName)
               ) as Buffer<ArrayBuffer>)
     );
     const charTalkCanvas = createCanvas(char.portraitWidth, char.portraitHeight);

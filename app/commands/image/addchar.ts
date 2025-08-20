@@ -29,7 +29,11 @@ import { getLogger } from "@logtape/logtape";
 const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).replace(".ts", ""));
 
 // Freckle
-import { SpriteInfoCustomChar, textboxChars, TextboxFont } from "@freckle-a1e/shared/types/freckle.t";
+import {
+    SpriteInfoCustomChar,
+    textboxChars,
+    TextboxFont
+} from "@freckle-a1e/shared/types/freckle.t";
 import { getHash, loadUserSettings, saveUserSettings, writeUserFile } from "helpers/userFiles";
 import { makeGenericEmbed } from "helpers/genericEmbed";
 import { randomBytes } from "node:crypto";
@@ -137,8 +141,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         const embed = makeGenericEmbed(
             title,
             `\`${id}\` isn't a valid ID!
-            Make sure it's English alphanumeric (A-Z, a-z and 0-9).
-            Underlines (_) and hyphens (-) are allowed.`,
+Make sure it's English alphanumeric (A-Z, a-z and 0-9).
+Underlines (_) and hyphens (-) are allowed.`,
             "error"
         );
         await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
@@ -191,8 +195,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     settings.customCharacters[id] = newChar;
 
+    writeUserFile(interaction.user.id, path.join("chars", newChar.fileName), ssImage);
     saveUserSettings(interaction.user.id, settings);
-    writeUserFile(interaction.user.id, path.join("char", newChar.fileName), ssImage);
 
     const embed = makeGenericEmbed(title, `Character \`${id}\` successfully added!`, "info");
     await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
