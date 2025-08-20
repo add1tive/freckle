@@ -3,11 +3,11 @@ import { configure, getConsoleSink } from "@logtape/logtape";
 import { getPrettyFormatter } from "@logtape/pretty";
 import { getStreamFileSink } from "@logtape/file";
 
-const CAT_WIDTH = 25;
-const CAT_SEPARATOR = " > ";
-
 export async function setUpLogger() {
     fs.mkdirSync(".local/logs", { recursive: true });
+
+    // just so I can remove the milliseconds logtape has by default
+    const prettyTimeFormat = (ts: number) => new Date(ts).toLocaleTimeString("en-GB");
 
     const dateRn = new Date()
         .toISOString()
@@ -15,26 +15,30 @@ export async function setUpLogger() {
         .replace(/\..+/, "")
         .replaceAll(":", "-");
 
-    const prettyNoColor = getPrettyFormatter({
+    const prettyFile = getPrettyFormatter({
         colors: false,
-        categoryWidth: CAT_WIDTH,
-        categorySeparator: CAT_SEPARATOR
+        categoryWidth: 24,
+        categoryTruncate: "middle",
+        timestamp: "date-time"
     });
-    const prettyCustColor = getPrettyFormatter({
+    const prettyTerminal = getPrettyFormatter({
         messageStyle: null,
+        messageColor: "white",
         categoryStyle: ["italic"],
-        categoryWidth: CAT_WIDTH,
-        categorySeparator: CAT_SEPARATOR
+        categoryWidth: 24,
+        categoryTruncate: "middle",
+        timestamp: prettyTimeFormat,
+        timestampStyle: "reset"
     });
 
     // logger
     await configure({
         sinks: {
-            console: getConsoleSink({ formatter: prettyCustColor }),
-            file: getStreamFileSink(`.local/logs/${dateRn}.log`, { formatter: prettyNoColor })
+            console: getConsoleSink({ formatter: prettyTerminal }),
+            file: getStreamFileSink(`.local/logs/${dateRn}.log`, { formatter: prettyFile })
         },
         loggers: [
-            { category: ["logtape", "meta"], sinks: [] }, // disabled
+            { category: ["logtape", "meta"], lowestLevel: "warning", sinks: ["console", "file"] }, // disabled
             { category: ["app"], lowestLevel: "debug", sinks: ["console", "file"] }
         ]
     });

@@ -27,7 +27,7 @@ import { createCanvas, loadImage, GlobalFonts, Canvas } from "@napi-rs/canvas";
 
 // LogTape
 import { getLogger } from "@logtape/logtape";
-const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename));
+const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).replace(".ts", ""));
 
 // Freckle
 import { getRandomIntInclusive } from "./smallUtils";
