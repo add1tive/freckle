@@ -55,17 +55,17 @@ export const textboxChars = [
 export type TextboxChar = (typeof textboxChars)[number];
 
 export type SpriteInfoChar = {
-    readonly name: string;
-    readonly textboxOffsetX: number;
-    readonly textboxOffsetY: number;
-    readonly portraitWidth: number;
-    readonly portraitHeight: number;
-    readonly spritesheetColumns: number;
-    readonly expressionCount: number;
-    readonly isDarkner?: boolean;
-    readonly customFont?: TextboxFont;
-    readonly href?: string;
-    readonly hrefTitle?: string;
+    name: string;
+    textboxOffsetX: number;
+    textboxOffsetY: number;
+    portraitWidth: number;
+    portraitHeight: number;
+    spritesheetColumns: number;
+    expressionCount: number;
+    isDarkner?: boolean;
+    customFont?: TextboxFont;
+    href?: string;
+    hrefTitle?: string;
 };
 
 export type SpriteInfo = {
