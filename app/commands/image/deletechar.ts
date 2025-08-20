@@ -78,7 +78,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     }
 
     // delete character image
-    unlinkSync(getFullUserFilePath(interaction.user.id, settings.customCharacters[id].fileName));
+    unlinkSync(getFullUserFilePath(interaction.user.id, path.join("chars", settings.customCharacters[id].fileName)));
 
     // delete character spec itself
     delete settings.customCharacters[id];
