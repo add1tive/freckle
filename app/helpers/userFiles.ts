@@ -194,6 +194,7 @@ export function saveUserSettings(
         );
         logger.info`Successfully saved settings for ${fUser}.`;
         cache[fUser] = userSettings;
+        console.log(userSettings);
         logger.debug`Cached settings for ${fUser}.`;
         return true;
     } catch (error) {
@@ -226,6 +227,7 @@ export function loadUserSettings(userId: string, customPassphrase?: string) {
                 logger.info`Successfully loaded settings for ${fUser} from file.`;
                 const parsed = JSON.parse(file) as UserSettingsC;
                 cache[fUser] = parsed;
+                console.log(parsed);
                 return parsed;
             } else {
                 logger.info`User ${fUser} has no settings file`;

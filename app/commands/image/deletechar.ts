@@ -45,7 +45,7 @@ const title = "Delete a custom character for /textbox";
 // prettier-ignore
 export const data = new SlashCommandBuilder()
     .setName("deletechar")
-    .setDescription("Delete a custom character for /textbox")
+    .setDescription("Delete a custom character for /textbox (doesn't delete its shared version, if shared)")
     .setIntegrationTypes([1])
     .setContexts([0, 1, 2])
     .addStringOption((option) =>
@@ -71,20 +71,24 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         return;
     }
 
-    // delete from shared links array
-    if (settings.customCharacters[id].sharedLink) {
-        const index = settings.sharedLinks?.indexOf(settings.customCharacters[id].sharedLink);
-        if (index && index > -1) settings.sharedLinks?.splice(index, 1);
-    }
-
     // delete character image
-    unlinkSync(getFullUserFilePath(interaction.user.id, path.join("chars", settings.customCharacters[id].fileName)));
+    unlinkSync(
+        getFullUserFilePath(
+            interaction.user.id,
+            path.join("chars", settings.customCharacters[id].fileName)
+        )
+    );
 
     // delete character spec itself
     delete settings.customCharacters[id];
     saveUserSettings(interaction.user.id, settings);
 
-    const embed = makeGenericEmbed(title, `Character \`${id}\` successfully removed.`, "info");
+    const embed = makeGenericEmbed(
+        title,
+        `Character \`${id}\` successfully removed.
+You're still able to take down its sharing link using \`/unsharechar\``,
+        "info"
+    );
     await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
     logger.info`Deleted character for user hash ${hash}`;
 }

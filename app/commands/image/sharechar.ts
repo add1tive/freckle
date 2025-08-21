@@ -53,12 +53,12 @@ export const data = new SlashCommandBuilder()
             .setName("id")
             .setDescription("Your character's ID.")
             .setRequired(true)
-    )
-    .addIntegerOption((option) =>
-        option
-            .setName("expirein")
-            .setDescription("In how many days this link will expire. Set to 0 for it to never expire. Default: 7 days.")
     );
+    // .addIntegerOption((option) =>
+    //     option
+    //         .setName("expirein")
+    //         .setDescription("In how many days this link will expire. Set to 0 for it to never expire. Default: 7 days.")
+    // );
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     const hash = getHash(interaction.user.id);
@@ -66,8 +66,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     // options
     const id = interaction.options.getString("id", true);
-    let expirein = interaction.options.getInteger("expirein");
-    expirein ??= 7;
+    // let expirein = interaction.options.getInteger("expirein");
+    // expirein ??= 7;
 
     let settings = loadUserSettings(interaction.user.id);
     let globalSettings = loadUserSettings(GLOBAL_USER);
@@ -90,15 +90,16 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     // add character
     let globalChar = {
         ...settings.customCharacters[id],
-        sharedBy: hash, // so we can check if the op can delete -- maybe change to actual id??
-        expires: Date.now() + expirein * 24 * 3600 // expiration timestamp
+        sharedBy: hash // so we can check if the op can delete -- maybe change to actual id??
+        // expires: Date.now() + expirein * 24 * 3600 // expiration timestamp
     };
     globalChar.fileName = randomBytes(7).toString("hex") + ".png.frkl"; // new filename
     globalSettings.customCharacters[link] = globalChar;
 
     // add the link to original character
     settings.customCharacters[id].sharedLink = link;
-    settings.sharedLinks?.push(link);
+    settings.sharedLinks ??= {};
+    settings.sharedLinks[link] = id;
 
     copyUserFileAndReencrypt(
         interaction.user.id, // original user
@@ -114,9 +115,9 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     const embed = makeGenericEmbed(
         title,
-        `Character \`${id}\` successfully shared for ${expirein} days.
+        `Character \`${id}\` successfully shared.
 **The link/code is \`${link}\`**
-You're able to take your character down prematurely by running \`/unsharechar\`.`,
+You're able to unshare your character by running \`/unsharechar\`.`,
         "info"
     );
     await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });

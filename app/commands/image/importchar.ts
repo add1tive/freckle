@@ -98,7 +98,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     // add character
     let newChar = { ...globalSettings.customCharacters[link] };
     newChar.sharedBy = undefined;
-    newChar.expires = undefined;
+    // newChar.expires = undefined;
     newChar.fileName = randomBytes(7).toString("hex") + ".png.frkl"; // new filename
     settings.customCharacters[id] = newChar;
 
