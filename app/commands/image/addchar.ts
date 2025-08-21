@@ -37,6 +37,7 @@ import {
 import { getHash, loadUserSettings, saveUserSettings, writeUserFile } from "helpers/userFiles";
 import { makeGenericEmbed } from "helpers/genericEmbed";
 import { randomBytes } from "node:crypto";
+import { createCanvas, loadImage } from "@napi-rs/canvas";
 
 const title = "Add custom character for /textbox";
 
@@ -140,12 +141,13 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     if (!/^[a-z0-9]+$/i.test(id)) {
         const embed = makeGenericEmbed(
             title,
-            `\`${id}\` isn't a valid ID!
+            `\`${id}\` isn't a valid ID.
 Make sure it's English alphanumeric (A-Z, a-z and 0-9).
 Underlines (_) and hyphens (-) are allowed.`,
             "error"
         );
         await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+        logger.warning`Failed to add character for user hash ${hash}: user error, not a Freckle one`;
         return;
     }
 
@@ -155,24 +157,43 @@ Underlines (_) and hyphens (-) are allowed.`,
         (settings?.customCharacters && settings?.customCharacters[id]) ||
         (textboxChars as readonly string[]).includes(id)
     ) {
-        const embed = makeGenericEmbed(title, `Character \`${id}\` already exists!`, "error");
+        const embed = makeGenericEmbed(title, `Character \`${id}\` already exists.`, "error");
         await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+        logger.warning`Failed to add character for user hash ${hash}: user error, not a Freckle one`;
         return;
     }
 
     // check if attachment is an image
-    logger.debug`Attachment type: ${spritesheet.contentType}`;
+    // logger.debug`Attachment type: ${spritesheet.contentType}`;
     if (!spritesheet.contentType?.includes("image")) {
-        const embed = makeGenericEmbed(title, `Attached file isn't an image!`, "error");
+        const embed = makeGenericEmbed(title, `Attached file doesn't seem to be an image, check file extension.`, "error");
         await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+        logger.warning`Failed to add character for user hash ${hash}: user error, not a Freckle one`;
         return;
     }
-
-    // --- CHECKS DONE ---
 
     // get image
     const response = await fetch(spritesheet.url);
     const ssImage = Buffer.from(await response.arrayBuffer());
+
+    // double check the image by trying to render it
+    try {
+        const canvas = createCanvas(300, 300);
+        const ctx = canvas.getContext("2d");
+        const ssImage_ = await loadImage(ssImage);
+        ctx.drawImage(ssImage_, 0, 0);
+    } catch (error) {
+        const embed = makeGenericEmbed(
+            title,
+            `Attached file is not a valid image. (Corrupted? Wrong file extension?)`,
+            "error"
+        );
+        await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+        logger.warning`Failed to add character for user hash ${hash}: user error, not a Freckle one`;
+        return;
+    }
+
+    // --- CHECKS DONE ---
 
     // actually build the character
     const newChar: SpriteInfoCustomChar = {
@@ -198,7 +219,7 @@ Underlines (_) and hyphens (-) are allowed.`,
     writeUserFile(interaction.user.id, path.join("chars", newChar.fileName), ssImage);
     saveUserSettings(interaction.user.id, settings);
 
-    const embed = makeGenericEmbed(title, `Character \`${id}\` successfully added!`, "info");
+    const embed = makeGenericEmbed(title, `Character \`${id}\` successfully added.`, "info");
     await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
-    logger.info`Added character for user hash ${hash}`;
+    logger.info`Successfully added character for user hash ${hash}`;
 }
