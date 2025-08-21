@@ -131,6 +131,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     } else {
         charCopy = { ...settings.customCharacters[id] };
         charCopy.fileName = fileName;
+        charCopy.sharedLink = undefined;
     }
     settings.customCharacters[idnew] = charCopy;
 
