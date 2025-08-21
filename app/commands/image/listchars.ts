@@ -34,10 +34,17 @@ export const data = new SlashCommandBuilder()
     .setName("listchars")
     .setDescription(title)
     .setIntegrationTypes([1])
-    .setContexts([0, 1, 2]);
+    .setContexts([0, 1, 2])
+    .addBooleanOption((option) =>
+        option
+            .setName("share")
+            .setDescription("If you want to share this info with others or not. Off by default.")
+    );
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     let settings = loadUserSettings(interaction.user.id);
+
+    const share = interaction.options.getBoolean("share");
 
     // check if characters exist
     if (
@@ -50,13 +57,25 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         return;
     }
 
-    const embed = makeGenericEmbed(
-        title,
-        `Your characters: ${Object.keys(settings.customCharacters)
-            .map((value) => `\`${value}\``)
-            .join(", ")}`,
-        "info"
-    );
+    if (!share) {
+        const embed = makeGenericEmbed(
+            title,
+            `Your characters:\n${Object.keys(settings.customCharacters)
+                .map((value) => `\`${value}\``)
+                .join(", ")}`,
+            "info"
+        );
 
-    await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+        await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+    } else {
+        const embed = makeGenericEmbed(
+            title,
+            `\`${interaction.user.username}\`'s characters:\n${Object.keys(settings.customCharacters)
+                .map((value) => `\`${value}\``)
+                .join(", ")}\n\n*This info was optionally shared publically.*`,
+            "info"
+        );
+
+        await interaction.reply({ embeds: [embed] });
+    }
 }
