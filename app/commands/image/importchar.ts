@@ -31,6 +31,7 @@ const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).r
 // Freckle
 import {
     copyUserFileAndReencrypt,
+    decrypt,
     getHash,
     loadUserSettings,
     saveUserSettings
@@ -68,6 +69,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     // options
     const link = interaction.options.getString("link", true);
+    const hashedLink = getHash(link);
     const id = interaction.options.getString("id", true);
 
     let settings = loadUserSettings(interaction.user.id);
@@ -84,11 +86,23 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     }
 
     // check if link is actually valid
-    if (!(globalSettings?.customCharacters && globalSettings.customCharacters[link])){
+    if (
+        !(
+            globalSettings?.customCharactersEncrypted &&
+            globalSettings.customCharactersEncrypted[hashedLink]
+        )
+    ) {
         const embed = makeGenericEmbed(title, `Sharing link \`${link}\` doesn't exist!`, "error");
         await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
         return;
     }
+
+    const char = JSON.parse(
+        decrypt(
+            Buffer.from(globalSettings.customCharactersEncrypted[hashedLink], "base64"),
+            link
+        ).toString()
+    );
 
     // if the user has no settings
     settings ??= { customCharacters: {} };
@@ -96,7 +110,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     settings.customCharacters ??= {};
 
     // add character
-    let newChar = { ...globalSettings.customCharacters[link] };
+    let newChar = { ...char };
     newChar.sharedBy = undefined;
     // newChar.expires = undefined;
     newChar.fileName = randomBytes(7).toString("hex") + ".png.frkl"; // new filename
@@ -107,7 +121,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     copyUserFileAndReencrypt(
         GLOBAL_USER, // original user
         interaction.user.id, // destination user: this one
-        path.join("chars", globalSettings.customCharacters[link].fileName), // original png
+        path.join("chars", char.fileName), // original png
         path.join("chars", newChar.fileName), // copied and reencrypted png
         link, // custom passphrase (the whole point of a link you privately share around)
         undefined // no custom passphrase (use user id)

@@ -30,6 +30,7 @@ const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).r
 
 // Freckle
 import {
+    decrypt,
     getFullUserFilePath,
     getHash,
     loadUserSettings,
@@ -61,27 +62,44 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     // options
     const link = interaction.options.getString("link", true);
+    const hashedLink = getHash(link);
 
     let settings = loadUserSettings(interaction.user.id);
     let globalSettings = loadUserSettings(GLOBAL_USER);
 
     // CHECK
     // check if user has anything shared
-    if (!(settings && settings.sharedLinks)){
-        const embed = makeGenericEmbed(title, `Sharing link \`${link}\` doesn't exist -- you have nothing shared.`, "error");
+    if (!(settings && settings.sharedLinks)) {
+        const embed = makeGenericEmbed(
+            title,
+            `Sharing link \`${link}\` doesn't exist -- you have nothing shared.`,
+            "error"
+        );
         await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
         return;
     }
 
     // check if character exists
-    if (!(globalSettings?.customCharacters && globalSettings?.customCharacters[link])) {
+    if (
+        !(
+            globalSettings?.customCharactersEncrypted &&
+            globalSettings?.customCharactersEncrypted[hashedLink]
+        )
+    ) {
         const embed = makeGenericEmbed(title, `Sharing link \`${link}\` doesn't exist.`, "error");
         await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
         return;
     }
 
+    const char = JSON.parse(
+        decrypt(
+            Buffer.from(globalSettings.customCharactersEncrypted[hashedLink], "base64"),
+            link
+        ).toString()
+    );
+
     // check if that character really belongs to this user
-    if (globalSettings.customCharacters[link].sharedBy !== hash) {
+    if (char.sharedBy !== hash) {
         const embed = makeGenericEmbed(
             title,
             `Sharing link \`${link}\` isn't yours. You'll have to ask its creator to take this character down.`,
@@ -94,7 +112,10 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     // DELETE
     // OP USER SIDE
     // delete the stored link in the character's spec
-    if (settings.customCharacters && settings.customCharacters[settings.sharedLinks[link]].sharedLink) {
+    if (
+        settings.customCharacters &&
+        settings.customCharacters[settings.sharedLinks[link]].sharedLink
+    ) {
         settings.customCharacters[settings.sharedLinks[link]].sharedLink = undefined;
     }
 
@@ -103,15 +124,10 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     // GLOBAL USER SIDE
     // delete character image
-    unlinkSync(
-        getFullUserFilePath(
-            GLOBAL_USER,
-            path.join("chars", globalSettings.customCharacters[link].fileName)
-        )
-    );
+    unlinkSync(getFullUserFilePath(GLOBAL_USER, path.join("chars", char.fileName)));
 
     // delete character spec
-    delete globalSettings.customCharacters[link];
+    delete globalSettings.customCharactersEncrypted[hashedLink];
     saveUserSettings(GLOBAL_USER, globalSettings);
 
     const embed = makeGenericEmbed(title, `Sharing link \`${link}\` successfully removed.`, "info");

@@ -43,25 +43,25 @@ interface Cache {
 
 let cache: Cache = {};
 
-function getKey(passphrase: string) {
+export function getKey(passphrase: string) {
     return crypto
         .createHash("sha256")
         .update(passphrase + (process.env.SECRET as string))
         .digest();
 }
 
-export function getHash(userId: string) {
-    return crypto.createHash("sha256").update(userId).digest("hex").substring(0, HASH_LENGTH);
+export function getHash(toHash: string) {
+    return crypto.createHash("sha256").update(toHash).digest("hex").substring(0, HASH_LENGTH);
 }
 
-function encrypt(data: crypto.BinaryLike, passphrase: string) {
+export function encrypt(data: crypto.BinaryLike, passphrase: string) {
     const iv = crypto.randomBytes(IV_LENGTH);
     const cipher = crypto.createCipheriv(ALGORITHM, getKey(passphrase), iv);
 
     return Buffer.concat([FILE_HEADER, iv, cipher.update(data), cipher.final()]);
 }
 
-function decrypt(data: Buffer, passphrase: string) {
+export function decrypt(data: Buffer, passphrase: string) {
     const iv = data.subarray(FILE_HEADER.length, IV_LENGTH + FILE_HEADER.length);
     const decipher = crypto.createDecipheriv(ALGORITHM, getKey(passphrase), iv);
 

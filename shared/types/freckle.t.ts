@@ -30,14 +30,15 @@ export interface CustomCharCollection {
     [id: string]: SpriteInfoCustomChar;
 }
 
-export interface SharedCharLinks {
+export interface StringMap {
     [id: string]: string;
 }
 
 export type UserSettingsC = {
     character?: TextboxChar;
-    customCharacters?: CustomCharCollection;
-    sharedLinks?: SharedCharLinks; // so user can remove by link
+    customCharacters?: CustomCharCollection; // only for private users
+    customCharactersEncrypted?: StringMap; // only for the global user
+    sharedLinks?: StringMap; // so user can remove by link
 };
 
 // textbox

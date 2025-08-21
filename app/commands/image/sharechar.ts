@@ -31,6 +31,7 @@ const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).r
 // Freckle
 import {
     copyUserFileAndReencrypt,
+    encrypt,
     getHash,
     loadUserSettings,
     saveUserSettings
@@ -54,11 +55,11 @@ export const data = new SlashCommandBuilder()
             .setDescription("Your character's ID.")
             .setRequired(true)
     );
-    // .addIntegerOption((option) =>
-    //     option
-    //         .setName("expirein")
-    //         .setDescription("In how many days this link will expire. Set to 0 for it to never expire. Default: 7 days.")
-    // );
+// .addIntegerOption((option) =>
+//     option
+//         .setName("expirein")
+//         .setDescription("In how many days this link will expire. Set to 0 for it to never expire. Default: 7 days.")
+// );
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     const hash = getHash(interaction.user.id);
@@ -79,13 +80,26 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         return;
     }
 
+    // check if the same character has already been shared
+    if (settings.customCharacters[id].sharedLink) {
+        const embed = makeGenericEmbed(
+            title,
+            `Custom character \`${id}\` was already shared.
+Its sharing link is ${settings.customCharacters[id].sharedLink}.`,
+            "error"
+        );
+        await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+        return;
+    }
+
     // generate shared link
     const link = randomBytes(4).toString("hex");
+    const hashedLink = getHash(link);
 
     // if the global user has no settings
-    globalSettings ??= { customCharacters: {} };
+    globalSettings ??= { customCharactersEncrypted: {} };
     // if the global user already has settings but no custom characters
-    globalSettings.customCharacters ??= {};
+    globalSettings.customCharactersEncrypted ??= {};
 
     // add character
     let globalChar = {
@@ -94,7 +108,12 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         // expires: Date.now() + expirein * 24 * 3600 // expiration timestamp
     };
     globalChar.fileName = randomBytes(7).toString("hex") + ".png.frkl"; // new filename
-    globalSettings.customCharacters[link] = globalChar;
+
+    // encrypt character using its link as a password and save
+    globalSettings.customCharactersEncrypted[hashedLink] = encrypt(
+        JSON.stringify(globalChar),
+        link
+    ).toString("base64");
 
     // add the link to original character
     settings.customCharacters[id].sharedLink = link;
@@ -116,7 +135,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     const embed = makeGenericEmbed(
         title,
         `Character \`${id}\` successfully shared.
-**The link/code is \`${link}\`**
+**The link is \`${link}\`**
 You're able to unshare your character by running \`/unsharechar\`.`,
         "info"
     );
