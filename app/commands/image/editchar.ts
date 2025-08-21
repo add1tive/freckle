@@ -30,14 +30,14 @@ const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).r
 
 // Freckle
 import {
-    getFullUserFilePath,
     getHash,
     loadUserSettings,
-    saveUserSettings
+    saveUserSettings,
+    writeUserFile
 } from "helpers/userFiles";
 import { makeGenericEmbed } from "helpers/genericEmbed";
-import { unlinkSync } from "node:fs";
 import { TextboxFont } from "@freckle-a1e/shared/types/freckle.t";
+import { createCanvas, loadImage } from "@napi-rs/canvas";
 
 const GLOBAL_USER = "__@freckle_global";
 
@@ -55,11 +55,11 @@ export const data = new SlashCommandBuilder()
             .setDescription("The character ID.")
             .setRequired(true)
     )
-    // .addAttachmentOption((option) =>
-    //     option
-    //         .setName("spritesheet")
-    //         .setDescription("The character spritesheet. Check docs on how to format it.")
-    // )
+    .addAttachmentOption((option) =>
+        option
+            .setName("spritesheet")
+            .setDescription("The character spritesheet. Check docs on how to format it.")
+    )
     .addStringOption((option) =>
         option
             .setName("name")
@@ -117,7 +117,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     // options
     const id = interaction.options.getString("id", true);
-    // const spritesheet = interaction.options.getAttachment("spritesheet");
+    const spritesheet = interaction.options.getAttachment("spritesheet");
     const name = interaction.options.getString("name");
     const offsetx = interaction.options.getInteger("offsetx");
     const offsety = interaction.options.getInteger("offsety");
@@ -137,8 +137,42 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         return;
     }
 
+    // edit spritesheet
+    if (spritesheet) {
+        // check if attachment is an image
+        if (!spritesheet.contentType?.includes("image")) {
+            const embed = makeGenericEmbed(title, `Attached file doesn't seem to be an image, check file extension.`, "error");
+            await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+            logger.warning`Failed to edit character for user hash ${hash}: user error, not a Freckle one`;
+            return;
+        }
+
+        // get image
+        const response = await fetch(spritesheet.url);
+        const ssImage = Buffer.from(await response.arrayBuffer());
+
+        // double check the image by trying to render it
+        try {
+            const canvas = createCanvas(300, 300);
+            const ctx = canvas.getContext("2d");
+            const ssImage_ = await loadImage(ssImage);
+            ctx.drawImage(ssImage_, 0, 0);
+        } catch (error) {
+            const embed = makeGenericEmbed(
+                title,
+                `Attached file is not a valid image. (Corrupted? Wrong file extension?)`,
+                "error"
+            );
+            await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+            logger.warning`Failed to edit character for user hash ${hash}: user error, not a Freckle one`;
+            return;
+        }
+
+        writeUserFile(interaction.user.id, path.join("chars", settings.customCharacters[id].fileName), ssImage);
+    }
+
     // edit settings
-    // if (spritesheet) settings.customCharacters[id].fileName = ...;
+    // ! ADD CHECKS!!!
     if (name) settings.customCharacters[id].name = name;
     if (offsetx) settings.customCharacters[id].textboxOffsetX = offsetx;
     if (offsety) settings.customCharacters[id].textboxOffsetY = offsety;
