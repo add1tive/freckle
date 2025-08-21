@@ -20,7 +20,7 @@
 
 import { getLogger } from "@logtape/logtape";
 import { TextboxChar, textboxChars } from "@freckle-a1e/shared/types/freckle.t";
-import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
+import { AutocompleteInteraction, ChatInputCommandInteraction, EmbedBuilder, MessageFlags, SlashCommandBuilder } from "discord.js";
 import { loadUserSettings, saveUserSettings } from "helpers/userFiles";
 import { makeGenericEmbed } from "helpers/genericEmbed";
 
@@ -29,20 +29,29 @@ const logger = getLogger(["app"]).getChild(path.basename(import.meta.filename).r
 
 const title = "Set default textbox character";
 
-export const data = {
-    options: [
-        {
-            type: 3,
-            name: "character",
-            description: "The character",
-            required: true
-        }
-    ],
-    name: "setdefault",
-    description: "Sets user's default character",
-    integration_types: [1],
-    contexts: [0, 1, 2]
-};
+export const data = new SlashCommandBuilder()
+    .setName("setdefault")
+    .setDescription("Sets user's default character")
+    .setIntegrationTypes([1])
+    .setContexts([0, 1, 2])
+    .addStringOption((option) =>
+        option
+            .setName("character")
+            .setDescription("The character.")
+            .setRequired(true)
+            .setAutocomplete(true)
+    );
+
+export async function autocomplete(interaction: AutocompleteInteraction) {
+    const userSettings = loadUserSettings(interaction.user.id);
+    let choices = textboxChars as unknown as string[];
+    if (userSettings && userSettings.customCharacters)
+        choices = choices.concat(Object.keys(userSettings.customCharacters));
+
+    const focusedValue = interaction.options.getFocused();
+    const filtered = choices.filter((choice) => choice.startsWith(focusedValue));
+    await interaction.respond(filtered.map((choice) => ({ name: choice, value: choice })));
+}
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     const userId = interaction.user.id;

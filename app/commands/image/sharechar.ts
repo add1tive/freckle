@@ -22,7 +22,7 @@
 import path from "node:path";
 
 // discord.js
-import { ChatInputCommandInteraction, MessageFlags, SlashCommandBuilder } from "discord.js";
+import { AutocompleteInteraction, ChatInputCommandInteraction, MessageFlags, SlashCommandBuilder } from "discord.js";
 
 // LogTape
 import { getLogger } from "@logtape/logtape";
@@ -38,6 +38,7 @@ import {
 } from "helpers/userFiles";
 import { makeGenericEmbed } from "helpers/genericEmbed";
 import { randomBytes } from "node:crypto";
+import { textboxChars } from "@freckle-a1e/shared/types/freckle.t";
 
 const GLOBAL_USER = "__@freckle_global";
 
@@ -54,12 +55,24 @@ export const data = new SlashCommandBuilder()
             .setName("id")
             .setDescription("Your character's ID.")
             .setRequired(true)
+            .setAutocomplete(true)
     );
 // .addIntegerOption((option) =>
 //     option
 //         .setName("expirein")
 //         .setDescription("In how many days this link will expire. Set to 0 for it to never expire. Default: 7 days.")
 // );
+
+export async function autocomplete(interaction: AutocompleteInteraction) {
+    const userSettings = loadUserSettings(interaction.user.id);
+    let choices = textboxChars as unknown as string[];
+    if (userSettings && userSettings.customCharacters)
+        choices = choices.concat(Object.keys(userSettings.customCharacters));
+
+    const focusedValue = interaction.options.getFocused();
+    const filtered = choices.filter((choice) => choice.startsWith(focusedValue));
+    await interaction.respond(filtered.map((choice) => ({ name: choice, value: choice })));
+}
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     const hash = getHash(interaction.user.id);

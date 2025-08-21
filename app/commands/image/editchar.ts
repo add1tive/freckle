@@ -22,7 +22,7 @@
 import path from "node:path";
 
 // discord.js
-import { ChatInputCommandInteraction, MessageFlags, SlashCommandBuilder } from "discord.js";
+import { AutocompleteInteraction, ChatInputCommandInteraction, MessageFlags, SlashCommandBuilder } from "discord.js";
 
 // LogTape
 import { getLogger } from "@logtape/logtape";
@@ -36,7 +36,7 @@ import {
     writeUserFile
 } from "helpers/userFiles";
 import { makeGenericEmbed } from "helpers/genericEmbed";
-import { TextboxFont } from "@freckle-a1e/shared/types/freckle.t";
+import { textboxChars, TextboxFont } from "@freckle-a1e/shared/types/freckle.t";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 
 const GLOBAL_USER = "__@freckle_global";
@@ -54,6 +54,7 @@ export const data = new SlashCommandBuilder()
             .setName("id")
             .setDescription("The character ID.")
             .setRequired(true)
+            .setAutocomplete(true)
     )
     .addAttachmentOption((option) =>
         option
@@ -110,6 +111,17 @@ export const data = new SlashCommandBuilder()
                 { name: "Undertale Papyrus", value: "Undertale Papyrus" }
             )
     );
+
+export async function autocomplete(interaction: AutocompleteInteraction) {
+    const userSettings = loadUserSettings(interaction.user.id);
+    let choices = textboxChars as unknown as string[];
+    if (userSettings && userSettings.customCharacters)
+        choices = choices.concat(Object.keys(userSettings.customCharacters));
+
+    const focusedValue = interaction.options.getFocused();
+    const filtered = choices.filter((choice) => choice.startsWith(focusedValue));
+    await interaction.respond(filtered.map((choice) => ({ name: choice, value: choice })));
+}
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     const hash = getHash(interaction.user.id);
