@@ -19,7 +19,7 @@
  */
 
 import { getLogger } from "@logtape/logtape";
-import { ChatInputCommandInteraction, MessageFlags } from "discord.js";
+import { ChatInputCommandInteraction, MessageFlags, SlashCommandBuilder } from "discord.js";
 import { makeGenericEmbed } from "helpers/genericEmbed";
 import { exec } from "node:child_process";
 
@@ -33,12 +33,12 @@ exec("git log --pretty=format:'%h' -n 1", function (error, stdout, stderr) {
 
 const title = "Help and info";
 
-export const data = {
-    name: "help",
-    description: "Sends you tips, useful links and all that",
-    integration_types: [1],
-    contexts: [0, 1, 2]
-};
+// prettier-ignore
+export const data = new SlashCommandBuilder()
+    .setName("help")
+    .setDescription("Sends you tips, useful links and all that")
+    .setIntegrationTypes([1])
+    .setContexts([0, 1, 2]);
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     const embed = makeGenericEmbed(

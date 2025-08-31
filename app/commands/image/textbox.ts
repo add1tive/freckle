@@ -109,7 +109,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     fs.mkdirSync(cachePath, { recursive: true });
 
-    const text = interaction.options.getString("text") as string; // required
+    const text = interaction.options.getString("text", true);
     const animated = interaction.options.getBoolean("animated");
     const expression = interaction.options.getInteger("charexp");
     const character = interaction.options.getString("character");
