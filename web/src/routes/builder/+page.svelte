@@ -18,13 +18,15 @@
      * You should have received a copy of the GNU General Public License
      * along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
+
+    import { base } from "$app/paths";
 </script>
 
 <svelte:head>
-    <title>Add or invite &ndash; Freckle</title>
+    <title>Command builder &ndash; Freckle</title>
 </svelte:head>
 
-<p>You can't access Freckle yet, sorry!</p>
+<p>Not yet implemented, please consult the <a href={`${base}/docs/textbox-commands`}>docs</a>!</p>
 
 <style>
     p {

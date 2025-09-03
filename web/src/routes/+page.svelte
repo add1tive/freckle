@@ -36,14 +36,7 @@
 </script>
 
 <svelte:head>
-    <title>Home - Freckle</title>
-
-    <meta property="og:title" content="Home - Freckle" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://add1tive.github.io/freckle/" />
-    <meta property="og:image" content="https://us-east-1.tixte.net/uploads/add1tive.tixte.co/favicon.png" />
-    <meta property="og:description" content="Home page for Freckle, a Discord app to make your day just a tiny bit more interesting" />
-    <meta name="theme-color" content="#a380dd">
+    <title>Home &ndash; Freckle</title>
 </svelte:head>
 
 <!-- TODO: make noelle's thingy glow + fix button icon sizes -->
@@ -88,6 +81,13 @@
             icon="book_2"
             text="Read the docs"
             href={`${base}/docs/what-is-freckle`} />
+        <!-- <BigFancyButton
+            color1="#d0bb97"
+            color2="#b79f76"
+            color3="#9c845b"
+            icon="build"
+            text="Command builder"
+            href={`${base}/builder`} /> -->
     </div>
     <span id="copy">&copy; add1tive 2025</span>
 </div>
