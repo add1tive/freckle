@@ -11,3 +11,7 @@ title: What is Freckle?
 Freckle is a Discord bot.
 
 It can currently only do one thing, and that is [generate UT/DR textboxes](./intro-to-textboxes).
+
+## Who are these docs for?
+
+Users with private access, for now.

@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { code_highlighter } from "mdsvex";
 import { escapeSvelty, isNumeric, replaceLastOccurrenceInString } from "./miniUtils.js";
 
 // adds a little hash icon next to headers
@@ -91,32 +92,32 @@ function actualFreckleHighlighter(code, isDemo) {
 // * PLEASE DO NOT QUESTION THIS CODE
 export function highlighter(code, lang) {
     lang = lang.toLowerCase();
+    if (lang === "freckle" || lang === "freckledemo") {
+        let processedCode = actualFreckleHighlighter(code, lang === "freckledemo");
 
-    let processedCode = code;
+        const tooltip = `<span class="code-block-copy-btn-tooltip">Copy</span>`;
 
-    if (lang === "freckle" || lang === "freckledemo")
-        processedCode = actualFreckleHighlighter(code, lang === "freckledemo");
+        const copybuttonOnClick = `(event) => {
+            navigator.clipboard.writeText("${code}");
+            event.target.children[1].innerText = "Copied!";
 
-    const tooltip = `<span class="code-block-copy-btn-tooltip">Copy</span>`;
+            if (event.target.dataset.timeoutid !== "-1") clearTimeout(event.target.dataset.timeoutid);
+            event.target.dataset.timeoutid = setTimeout(() => {
+                event.target.children[1].innerText = "Copy";
+                event.target.dataset.timeoutid = "-1";
+            }, 2000);
+        }`;
+        const copybuttonOnMouseOut = `(event) => {
+            if (event.target.dataset.timeoutid !== "-1") clearTimeout(event.target.dataset.timeoutid);
+            event.target.dataset.timeoutid = setTimeout(() => {
+                event.target.children[1].innerText = "Copy";
+                event.target.dataset.timeoutid = "-1";
+            }, 210);
+        }`;
+        const copybutton = `<button class="code-block-copy-btn" data-timeoutid="-1" on:click={${copybuttonOnClick}} on:mouseout={${copybuttonOnMouseOut}} on:blur={${copybuttonOnMouseOut}}><span class="material-symbols-outlined">content_copy</span>${tooltip}</button>`;
 
-    const copybuttonOnClick = `(event) => {
-        navigator.clipboard.writeText("${code}");
-        event.target.children[1].innerText = "Copied!";
-
-        if (event.target.dataset.timeoutid !== "-1") clearTimeout(event.target.dataset.timeoutid);
-        event.target.dataset.timeoutid = setTimeout(() => {
-            event.target.children[1].innerText = "Copy";
-            event.target.dataset.timeoutid = "-1";
-        }, 2000);
-    }`;
-    const copybuttonOnMouseOut = `(event) => {
-        if (event.target.dataset.timeoutid !== "-1") clearTimeout(event.target.dataset.timeoutid);
-        event.target.dataset.timeoutid = setTimeout(() => {
-            event.target.children[1].innerText = "Copy";
-            event.target.dataset.timeoutid = "-1";
-        }, 210);
-    }`;
-    const copybutton = `<button class="code-block-copy-btn" data-timeoutid="-1" on:click={${copybuttonOnClick}} on:mouseout={${copybuttonOnMouseOut}} on:blur={${copybuttonOnMouseOut}}><span class="material-symbols-outlined">content_copy</span>${tooltip}</button>`;
-
-    return `<pre class="language-${lang} code-block"><code class="language-${lang}">${escapeSvelty(processedCode)}</code>${copybutton}</pre>`;
+        return `<pre class="language-${lang} code-block"><code class="language-${lang}">${escapeSvelty(processedCode)}</code>${copybutton}</pre>`;
+    } else {
+        return code_highlighter(code, lang);
+    }
 }

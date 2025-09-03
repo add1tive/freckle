@@ -63,7 +63,7 @@ export const data = new SlashCommandBuilder()
         option
             .setName("name")
             .setDescription("The character's name.")
-            .setRequired(true)
+            // .setRequired(true)
     )
     .addIntegerOption((option) =>
         option
@@ -122,7 +122,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     // options
     const spritesheet = interaction.options.getAttachment("spritesheet", true);
     const id = interaction.options.getString("id", true);
-    const name = interaction.options.getString("name", true);
+    let name = interaction.options.getString("name");
+    name ??= id;
     let offsetx = interaction.options.getInteger("offsetx");
     offsetx ??= 10;
     let offsety = interaction.options.getInteger("offsety");

@@ -23,7 +23,6 @@ export type SpriteInfoCustomChar = SpriteInfoChar & {
     fileName: string;
     sharedLink?: string; // only for private users, so user can remove by id
     sharedBy?: string; // only for the global user
-    // expires?: number; // only for the global user
 };
 
 export interface CustomCharCollection {
@@ -69,8 +68,8 @@ export type SpriteInfoChar = {
     expressionCount: number;
     isDarkner?: boolean;
     customFont?: TextboxFont;
-    href?: string;
-    hrefTitle?: string;
+    href?: string; // only for the website
+    hrefTitle?: string; // only for the website
 };
 
 export type SpriteInfo = {

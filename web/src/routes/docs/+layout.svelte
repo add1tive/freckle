@@ -22,6 +22,7 @@
     import "material-symbols";
     import { base } from "$app/paths";
     import { page } from "$app/state";
+    import SmallCircularButton from "$components/SmallCircularButton.svelte";
     let { children } = $props();
 
     function linkIsCurrentDocs(id: string) {
@@ -33,7 +34,8 @@
         "what-is-freckle": "What is Freckle?",
         "intro-to-textboxes": "Intoduction to Textboxes",
         "textbox-commands": "Textbox commands",
-        "expressions-table": "Expressions table"
+        "expressions-table": "Expressions table",
+        "custom-chars": "Custom characters",
     };
 
     // don't ask, again
@@ -55,6 +57,7 @@
             {@render docsNavLink("intro-to-textboxes")}
             {@render docsNavLink("textbox-commands")}
             {@render docsNavLink("expressions-table")}
+            {@render docsNavLink("custom-chars")}
         </ul>
     </aside>
     <div id="docArticle">
@@ -66,6 +69,7 @@
     <a href="#top" id="toTopBtn"
         ><span class="material-symbols-outlined" aria-hidden="true">keyboard_arrow_up</span></a>
 </div>
+<SmallCircularButton icon="keyboard_arrow_up" isLink={true} href="#top" isAtBottom={true} />
 
 <style>
     :root {
@@ -126,21 +130,5 @@
     li.active > a {
         color: white;
         border-color: #dee2e6 #dee2e6 #fff;
-    }
-
-    #toTopBtnDiv {
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        z-index: 1000;
-    }
-    #toTopBtn {
-        height: 5rem;
-    }
-    #toTopBtn > span {
-        font-size: 40pt;
-        color: white;
-        background-color: #495057;
-        border-radius: 2rem;
     }
 </style>

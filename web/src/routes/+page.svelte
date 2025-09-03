@@ -20,7 +20,7 @@
      */
 
     import NoelleLanding from "$components/svg/NoelleLanding.svelte";
-    import ThickJuicyButton from "$components/ThickJuicyButton.svelte";
+    import BigFancyButton from "$components/BigFancyButton.svelte";
     import { base } from "$app/paths";
 
     const letters = "Freckle".split("");
@@ -67,21 +67,21 @@
         <span id="disclaimer">in very early private access</span>
     </div>
     <div id="mainButtons">
-        <ThickJuicyButton
+        <BigFancyButton
             color1="#c9839b"
             color2="#a8627a"
             color3="#965068"
             icon="chat"
             text="Add or invite"
             href={`${base}/add`} />
-        <ThickJuicyButton
+        <BigFancyButton
             color1="#ae96d1"
             color2="#8c73b4"
             color3="#745b9c"
             icon="book_2"
             text="Read the docs"
             href={`${base}/docs/what-is-freckle`} />
-        <!-- <ThickJuicyButton
+        <!-- <BigFancyButton
             color1="#d0bb97"
             color2="#b79f76"
             color3="#9c845b"

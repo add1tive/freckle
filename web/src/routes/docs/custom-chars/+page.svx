@@ -1,0 +1,118 @@
+---
+title: Custom characters
+---
+
+<script lang="ts">
+    import { base } from "$app/paths";
+    const d = `${base}/images/docs`;
+
+    import ZoomablePicture from "$components/ZoomablePicture.svelte";
+</script>
+
+<svelte:head>
+    <title>{title} &ndash; Freckle</title>
+</svelte:head>
+
+# {title}
+
+You can add and share your own custom characters for the /textbox command!
+
+<ZoomablePicture src={`${d}/custom-char.png`} alt="An example of a custom character" />
+
+## Preparing the spritesheet
+
+The spritesheet has to be arranged like this:
+
+* 5 pixels of padding between sprites, both horizontal and vertical
+
+* 5 pixels of padding around the whole image
+
+Refer to the image below. Notice how the black background doesn't have to match the sprite's specified size.
+
+<ZoomablePicture src={`${d}/ss-diagram.png`} alt="Diagram explaining spritesheet spacing" />
+
+Undertale and Deltarune spritesheets from [The Spriters Resource](https://www.spriters-resource.com/) usually have such padding.
+
+Just make sure to remove the background.
+
+<ZoomablePicture src={`${d}/tsr-berdly.png`} alt="TSR screenshot of Berdly" />
+
+If you have your own custom sprites (all with the same size, of course) in separate files, you can use
+[Funkin Packer](https://neeeoo.github.io/funkin-packer/), a fork of [Free Texture Packer](https://free-tex-packer.com/app/).
+
+Make sure the "Sprite Padding" and "Border padding" options are set to 5 like in the image (click to zoom in).
+
+<p style="opacity: 0.5;"><i>You could also try messing with the "Packer" option. In this screenshot it was changed from the default
+to match Freckle's default spritesheets which are more horizontal than vertical, but yours don't have to be like that.</i></p>
+
+<ZoomablePicture src={`${d}/funkin-packer.png`} alt="Screenshot of Funkin Packer" />
+
+## Adding
+
+The required options are:
+
+* `spritesheet` - an image, check [above](#preparing-the-spritesheet)
+
+* `id` - what you'll be inputting into Freckle every time you want to use your character
+(you can also set it as default with `/setdefault`)
+
+* `width` - how wide each individual character sprite is in pixels (remember - they all have the same width and height!)
+
+* `height` - how high each individual character sprite is in pixels
+
+* `columns` - how many columns are present in the spritesheet, eg. two in the cat example above
+
+* `expressions` - how many expressions the spritesheet contains, eg. two in the cat example above
+
+The optional options are:
+
+* `name` - currently unused, set to the character's ID if left empty
+
+* `offsetx` - by how many pixels the character sprite will be offset horizontally in the textbox starting from the top left corner,
+default is `10`
+
+* `offsety` - by how many pixels the character sprite will be offset vertically in the textbox starting from the top left corner,
+default is `10`
+
+* `isdarkner` - whether to use the Dark World textbox style unless overriden by the user in the `/textbox` command,
+default is `false`
+
+* `font` - the font used for the textbox unless overriden by the user in the `/textbox` command,
+default is `Determination Mono`
+
+<ZoomablePicture src={`${d}/custom-char-add.png`} alt="Screenshot of Freckle's /addchar command" />
+
+After this just use `/textbox` like normal.
+
+## Sharing
+
+Use `/sharechar` to get a private code with which the other user (or yourself if you want a copy) can add your character.
+The only option is the ID.
+
+The ID can be the same as the original, but it doesn't have to. Again, useful for copies.
+
+Freckle *will* receive a proper copy command in the future.
+
+You can also *unshare* a character if you have its sharing code (the only option) **even if you deleted the character on your end**.
+Just use the `/unsharechar` command. Keep in mind that your character might still be out there if someone added it and
+shared it again.
+
+Freckle *might* get a public character repository in the future.
+
+## Editing
+
+You can edit existing characters using the `/editchar` command. The options are the same as for `/addchar`.
+
+## Deleting
+
+Use `/deletechar`. The only option is the ID.
+
+## Renaming
+
+Freckle doesn't have a proper rename command yet, but you can copy your character using the sharing function and then delete the
+original.
+
+## Listing
+
+You can list all your characters using `/listchar`.
+This can be displayed privately (ephemeral message) or publically (so you can flex, I guess).
