@@ -22,7 +22,7 @@
      * along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
 
-    export const title = "Textbox character expressions table";
+    export const title = "Expressions table";
 
     import { base } from "$app/paths";
     import spriteInfo_ from "@freckle-a1e/shared/assets/images/utdr_talk/spriteInfo.json";
@@ -86,7 +86,14 @@
 </script>
 
 <svelte:head>
-    <title>{title} &ndash; Freckle</title>
+    <title>{title} - Freckle</title>
+
+    <meta property="og:title" content="Expressions table - Freckle" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://add1tive.github.io/freckle/docs/expressions-table" />
+    <meta property="og:image" content="https://us-east-1.tixte.net/uploads/add1tive.tixte.co/favicon.png" />
+    <meta property="og:description" content="Documentation for Freckle, a Discord app to make your day just a tiny bit more interesting" />
+    <meta name="theme-color" content="#a380dd">
 </svelte:head>
 
 <div class="toc">

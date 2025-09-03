@@ -22,5 +22,42 @@
     import { base } from "$app/paths";
 </script>
 
-<span>Nothing here!</span>
+<!-- I can't automatically redirect with GitHub Pages -->
+
+<svelte:head>
+    <title>404 Not found &ndash; Freckle</title>
+</svelte:head>
+
+<div>
+    <h1>404</h1>
+    <p>not found</p>
+</div>
+
 <span>You might be looking for <a href={`${base}/docs/what-is-freckle`}>What is Freckle?</a></span>
+
+<style>
+    div {
+        width: 100%;
+        display: flex;
+        /* align-items: center; */
+        flex-direction: column;
+        /* padding-top: 5rem; */
+        /* @media screen and (width <= 640px) {
+            padding-top: 2rem;
+        } */
+    }
+    h1 {
+        font-weight: lighter;
+        font-size: 12rem;
+        @media screen and (width <= 640px) {
+            font-size: 8rem;
+        }
+    }
+    p {
+        font-size: 2.5rem;
+        display: block;
+        @media screen and (width <= 640px) {
+            font-size: 1.5rem;
+        }
+    }
+</style>

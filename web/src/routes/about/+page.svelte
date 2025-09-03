@@ -23,7 +23,14 @@
 </script>
 
 <svelte:head>
-    <title>About &ndash; Freckle</title>
+    <title>About - Freckle</title>
+
+    <meta property="og:title" content="About - Freckle" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://add1tive.github.io/freckle/about" />
+    <meta property="og:image" content="https://us-east-1.tixte.net/uploads/add1tive.tixte.co/favicon.png" />
+    <meta property="og:description" content="About Freckle, a Discord app to make your day just a tiny bit more interesting" />
+    <meta name="theme-color" content="#a380dd">
 </svelte:head>
 
 <div id="main">
